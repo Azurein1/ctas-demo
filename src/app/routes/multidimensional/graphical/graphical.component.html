@@ -1,0 +1,83 @@
+<app-main-content>
+  <app-content-header title="图形化数据库">
+  </app-content-header>
+  <app-content-body>
+    <nz-row>
+      <nz-col nzSpan="3">
+      </nz-col>
+      <nz-col nzSpan="18">
+        <nz-card nzTitle="实现功能">
+          <nz-row>
+            <nz-col nzSpan="24">
+              <nz-descriptions nzBordered>
+                <nz-descriptions-item nzTitle="数据库表">
+                  <nz-select [(ngModel)]="formValue" nzPlaceHolder="选择表">
+                    <nz-option *ngFor="let option of formList" [nzValue]="option" [nzLabel]="option.label"></nz-option>
+                  </nz-select>
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="操作">
+                  <nz-select [(ngModel)]="selectedValue" (ngModelChange)="log($event)" nzPlaceHolder="选择操作">
+                    <nz-option *ngFor="let option of actionList" [nzValue]="option" [nzLabel]="option.label"></nz-option>
+                  </nz-select>
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="介词">
+                  <input nz-input placeholder="" [(ngModel)]="prep" [disabled]="true" style="width: 150px;"/>
+                </nz-descriptions-item>
+                <nz-descriptions-item nzTitle="数据">
+                  <input nz-input placeholder="" [(ngModel)]="values"/>
+                </nz-descriptions-item>
+              </nz-descriptions>
+            </nz-col>
+            <nz-col nzSpan="24">
+              <nz-divider></nz-divider>
+              <nz-table *ngIf="formValue.sql === 'user' " [nzData]="tableData" nzBordered>
+                <thead>
+                <tr>
+                  <th>id</th>
+                  <th>userName</th>
+                  <th>role</th>
+                  <th>email</th>
+                  <th>createTime</th>
+                  <th>remarks</th>
+                  <th>status</th>
+                </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let data of tableData">
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.userName }}</td>
+                    <td>{{ data.role }}</td>
+                    <td>{{ data.email }}</td>
+                    <td>{{ data.createTime }}</td>
+                    <td>{{ data.remarks }}</td>
+                    <td>{{ data.status }}</td>
+                  </tr>
+                </tbody>
+              </nz-table>
+            </nz-col>
+          </nz-row>
+          <nz-card nzTitle="数据库语言">
+            <p>{{ selectedValue?.sql }}</p>
+            <p>{{ formValue?.sql }}</p>
+            <p>{{ prep }}</p>
+            <p>{{ values }}</p>
+          </nz-card>
+          <ng-template #template>
+            <div class="ant-notification-notice-content">
+              <div class="ant-notification-notice-with-icon">
+                <span class="ant-notification-notice-icon"><i nz-icon nzType="smile" style="color: rgb(16, 142, 233);"></i></span>
+                <div class="ant-notification-notice-message">操作成功</div>
+                <div class="ant-notification-notice-description">
+                  成功向数据库{{ selectedValue.label }}数据
+                </div>
+              </div>
+            </div>
+          </ng-template>
+          <button nz-button [nzType]="'primary'" (click)="createBasicNotification(template)">
+            执行
+          </button>
+        </nz-card>
+      </nz-col>
+    </nz-row>
+  </app-content-body>
+</app-main-content>

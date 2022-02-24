@@ -1,0 +1,537 @@
+<app-main-content>
+  <app-content-header title="DNS数据">
+  </app-content-header>
+  <app-content-body>
+    <nz-tabset>
+      <!--      <nz-tab nzTitle="DNS数据">-->
+      <!--        <div>-->
+      <!--          <form nz-form  [formGroup]="selectForm">-->
+      <!--            <nz-row nzGutter="24">-->
+      <!--              <nz-col nzSpan="8">-->
+      <!--                <nz-form-item>-->
+      <!--                  <nz-form-label nzFor="dateRange">时间</nz-form-label>-->
+      <!--                  <nz-form-control>-->
+      <!--                    <nz-range-picker id="dateRange" [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>-->
+      <!--                  </nz-form-control>-->
+      <!--                </nz-form-item>-->
+      <!--              </nz-col>-->
+      <!--              <nz-col nzSpan="4">-->
+      <!--                <nz-form-item>-->
+      <!--                  <nz-form-label nzFor="granularity">时间粒度</nz-form-label>-->
+      <!--                  <nz-form-control>-->
+      <!--                    <nz-select id="granularity" formControlName="granularity">-->
+      <!--                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>-->
+      <!--                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>-->
+      <!--                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>-->
+      <!--                    </nz-select>-->
+      <!--                  </nz-form-control>-->
+      <!--                </nz-form-item>-->
+      <!--              </nz-col>-->
+      <!--              <nz-col nzSpan="4">-->
+      <!--                <nz-form-item>-->
+      <!--                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">-->
+      <!--                    <i nz-icon nzType="search" nzTheme="outline"></i>-->
+      <!--                    查询-->
+      <!--                  </button>-->
+      <!--                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置</button>-->
+      <!--                </nz-form-item>-->
+      <!--              </nz-col>-->
+
+      <!--            </nz-row>-->
+      <!--          </form>-->
+      <!--        </div>-->
+      <!--        <nz-row nzGutter="24">-->
+      <!--          <nz-col nzSpan="16">-->
+      <!--            <nz-table #dnsTable [nzData]="dnsDataList">-->
+      <!--              <thead>-->
+      <!--              <tr>-->
+      <!--                <th nzAlign="center" *ngFor="let column of dnsListOfColumn" [nzShowSort]="column.flag"-->
+      <!--                    [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>-->
+      <!--              </tr>-->
+      <!--              </thead>-->
+      <!--              <tbody>-->
+      <!--              <tr *ngFor="let data of dnsTable.data">-->
+      <!--                <td nzAlign="center">{{data.id}}</td>-->
+      <!--                <td nzAlign="center">{{data.time}}</td>-->
+      <!--                <td nzAlign="center">{{data.domainName}}</td>-->
+      <!--                <td nzAlign="center">{{data.srcAddress}}</td>-->
+      <!--                <td nzAlign="center">{{data.sp }}</td>-->
+      <!--                <td nzAlign="center">{{data.analysisAddress}}</td>-->
+      <!--                <td nzAlign="center">{{data.requestCount | number: '0.0-0'}}</td>-->
+      <!--                <td nzAlign="center">{{(data.requestCount - data.requestCount / 10) | number: '0.0-0'}}</td>-->
+      <!--                <td nzAlign="center">{{data.flow | number: '0.2-2'}}</td>-->
+      <!--                <td nzAlign="center">{{data.validity }}</td>-->
+      <!--              </tr>-->
+      <!--              </tbody>-->
+      <!--              <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>-->
+      <!--            </nz-table>-->
+      <!--          </nz-col>-->
+      <!--          <nz-col nzSpan="8">-->
+      <!--            <div echarts [options]="dnsInOutLineOption"></div>-->
+      <!--            <div echarts [options]="dnsQAOption"></div>-->
+      <!--          </nz-col>-->
+      <!--        </nz-row>-->
+      <!--      </nz-tab>-->
+
+      <nz-tab nzTitle="ICP户籍表管理">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label nzFor="dateRange">时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label nzFor="granularity">时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+
+            </nz-row>
+          </form>
+        </div>
+        <nz-table #basicTable [nzData]="listOfData">
+          <thead>
+          <tr>
+            <th>序号</th>
+            <th>目的IP</th>
+            <th>ICP</th>
+            <th>域名</th>
+            <th>CNAME</th>
+            <th>运营商</th>
+            <th>省份</th>
+            <th>业务</th>
+            <th>点击次数</th>
+            <th>上报省份</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td>{{ data.no }}</td>
+            <td>{{ data.targetIp }}</td>
+            <td>{{ data.icp }}</td>
+            <td>{{ data.host }}</td>
+            <td>{{ data.cname }}</td>
+            <td>{{ data.operator }}</td>
+            <td>{{ data.province }}</td>
+            <td>{{ data.business }}</td>
+            <td>{{ data.clicks }}</td>
+            <td>{{ data.report }}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+
+      <nz-tab nzTitle="互联网总览">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label nzFor="dateRange">时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label nzFor="granularity">时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                  <button nz-button nzType="primary" type="button" class="search-button">
+                    导出
+                  </button>
+                </nz-form-item>
+              </nz-col>
+
+            </nz-row>
+          </form>
+        </div>
+        <nz-table #customNetflowTable [nzData]="customNetflowOfData" nzTableLayout="fixed" [nzShowTotal]="totalTemplate">
+          <thead>
+          <tr>
+            <th
+              *ngFor="let column of customNetflowOfColumns"
+              [nzSortOrder]="column.sortOrder"
+              [nzSortFn]="column.sortFn"
+              [nzSortDirections]="column.sortDirections"
+              [nzFilterMultiple]="column.filterMultiple"
+              [nzFilters]="column.listOfFilter"
+              [nzFilterFn]="column.filterFn"
+            >
+              {{ column.name }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of customNetflowTable.data">
+            <td><a (click)="showCustomTable()">{{ data.compName }}</a></td>
+            <td>{{ data.total }}</td>
+            <td>{{ data.inPro }}</td>
+            <td>{{ data.outPro }}</td>
+            <td>{{ data.outNet }}</td>
+            <td>{{ data.high }}</td>
+            <td>{{ data.low }}</td>
+            <td>{{ data.inProRent }}</td>
+            <td>{{ data.inNetRent }}</td>
+<!--            <td><a (click)="showCustomTable()">ICP分析</a></td>-->
+<!--            <td><a (click)="showIpAnalyseOk()">IP分析</a></td>-->
+          </tr>
+          </tbody>
+          <ng-template #totalTemplate let-total>总 {{ 200000 }} 条</ng-template>
+        </nz-table>
+        <nz-modal [(nzVisible)]="customVisible" [nzStyle]="{ top: '20px' }" nzTitle="引入ICP分析" (nzOnCancel)="costomCancel()" (nzOnOk)="customOk()" [nzWidth]="width">
+          <ng-container *nzModalContent>
+            <nz-table #customIcpNetflowTable [nzData]="customNetflowIcpOfData" nzTableLayout="fixed">
+              <thead>
+              <tr>
+                <th
+                  *ngFor="let column of customNetflowIcpOfColumns"
+                  [nzSortOrder]="column.sortOrder"
+                  [nzSortFn]="column.sortFn"
+                  [nzSortDirections]="column.sortDirections"
+                  [nzFilterMultiple]="column.filterMultiple"
+                  [nzFilters]="column.listOfFilter"
+                  [nzFilterFn]="column.filterFn"
+                >
+                  {{ column.name }}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of customIcpNetflowTable.data">
+                <td><a (click)="showCustomIcpTable()">{{ data.icpName }}</a></td>
+                <td>{{ data.total }}</td>
+                <td>{{ data.inPro }}</td>
+                <td>{{ data.outPro }}</td>
+                <td>{{ data.outNet }}</td>
+                <td>{{ data.inProRent }}</td>
+                <td>{{ data.inNetRent }}</td>
+              </tr>
+              </tbody>
+            </nz-table>
+            <nz-modal [(nzVisible)]="customIcpVisible" nzTitle="ICP详细信息" (nzOnCancel)="customIcpCancel()" (nzOnOk)="customIcpOk()" [nzWidth]="width">
+              <ng-container *nzModalContent>
+                <nz-table #icpDetailTable [nzData]="icpDetailOfData">
+                  <thead>
+                  <tr>
+                    <th>IP</th>
+                    <th>总流量</th>
+                    <th>平均流速</th>
+                    <th>峰值流速</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let data of icpDetailTable.data">
+                    <td><a (click)="showIpDetailTable()">{{ data.ip }}</a></td>
+                    <td>{{ data.total }}</td>
+                    <td>{{ data.average }}</td>
+                    <td>{{ data.maxSpeed }}</td>
+                  </tr>
+                  </tbody>
+                </nz-table>
+                <nz-modal [(nzVisible)]="ipDetailVidsible" [nzStyle]="{ top: '20px' }" nzTitle="IP详情" (nzOnCancel)="ipDetailCancel()" (nzOnOk)="ipDetailOk()" [nzWidth]="ipWidth">
+                  <ng-container *nzModalContent>
+                    <nz-tabset>
+                      <nz-tab nzTitle="域名详情">
+                        <nz-table #ipDetailTable [nzData]="ipDetailOfDisplayData" nzTableLayout="fixed">
+                          <thead>
+                          <tr>
+                            <th nzCustomFilter>
+                              域名
+                              <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+                                <i nz-icon nzType="search"></i>
+                              </nz-filter-trigger>
+                            </th>
+                            <th>CNAME</th>
+                            <th>公司名</th>
+                            <th>点击次数</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let data of ipDetailTable.data">
+                            <td>{{ data.host }}</td>
+                            <td>{{ data.webName }}</td>
+                            <td>{{ data.compName }}</td>
+                            <td>{{ data.clickTime }}</td>
+                          </tr>
+                          </tbody>
+                          <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+                        </nz-table>
+                        <nz-dropdown-menu #menu="nzDropdownMenu">
+                          <div class="ant-table-filter-dropdown">
+                            <div class="search-box">
+                              <input type="text" nz-input placeholder="搜索域名" [(ngModel)]="searchValue" />
+                              <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                                搜索
+                              </button>
+                              <button nz-button nzSize="small" (click)="reset()">重置</button>
+                            </div>
+                          </div>
+                        </nz-dropdown-menu>
+                      </nz-tab>
+                      <nz-tab nzTitle="CNAME详情">
+                        <nz-table #cnameTable [nzData]="cnameDetailOfDisplayData" nzTableLayout="fixed">
+                          <thead>
+                          <tr>
+                            <th nzCustomFilter>
+                              CNAME域
+                              <nz-filter-trigger [(nzVisible)]="cnameVisible" [nzActive]="cnameValue.length > 0" [nzDropdownMenu]="menu">
+                                <i nz-icon nzType="search"></i>
+                              </nz-filter-trigger>
+                            </th>
+                            <th>网站名</th>
+                            <th>公司名</th>
+                            <th>点击次数</th>
+                          </tr>
+                          </thead>
+                          <tbody>
+                          <tr *ngFor="let data of cnameTable.data">
+                            <td>{{ data.cname }}</td>
+                            <td>{{ data.webName }}</td>
+                            <td>{{ data.compName }}</td>
+                            <td>{{ data.clickTime }}</td>
+                          </tr>
+                          </tbody>
+                          <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+                        </nz-table>
+                        <nz-dropdown-menu #menu="nzDropdownMenu">
+                          <div class="ant-table-filter-dropdown">
+                            <div class="search-box">
+                              <input type="text" nz-input placeholder="搜索CNAME" [(ngModel)]="cnameValue" />
+                              <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                                搜索
+                              </button>
+                              <button nz-button nzSize="small" (click)="reset()">重置</button>
+                            </div>
+                          </div>
+                        </nz-dropdown-menu>
+                      </nz-tab>
+                    </nz-tabset>
+                  </ng-container>
+                </nz-modal>
+              </ng-container>
+            </nz-modal>
+          </ng-container>
+        </nz-modal>
+        <nz-modal [(nzVisible)]="ipAnalyseVisible" [nzStyle]="{ top: '20px' }" nzTitle="引入IP分析" (nzOnCancel)="ipAnalyseCancel()" (nzOnOk)="ipAnalyseOk()" [nzWidth]="width">
+          <ng-container *nzModalContent>
+            <nz-table #ipAnalyseTable [nzData]="customNetflowIpOfData" nzTableLayout="fixed">
+              <thead>
+              <tr>
+                <th
+                  *ngFor="let column of customNetflowIpOfColumns"
+                  [nzSortOrder]="column.sortOrder"
+                  [nzSortFn]="column.sortFn"
+                  [nzSortDirections]="column.sortDirections"
+                  [nzFilterMultiple]="column.filterMultiple"
+                  [nzFilters]="column.listOfFilter"
+                  [nzFilterFn]="column.filterFn"
+                >
+                  {{ column.name }}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of ipAnalyseTable.data">
+                <td><a (click)="showIpTable()">{{ data.ip }}</a></td>
+                <td>{{ data.ipIcp }}</td>
+                <td>{{ data.total }}</td>
+                <td>{{ data.inPro }}</td>
+                <td>{{ data.outPro }}</td>
+                <td>{{ data.outNet }}</td>
+                <td>{{ data.inProRent }}</td>
+                <td>{{ data.inNetRent }}</td>
+                <td>{{ data.percent }}</td>
+              </tr>
+              </tbody>
+            </nz-table>
+            <nz-modal [(nzVisible)]="ipVisibel" nzTitle="IP域名详情" (nzOnCancel)="ipCancel()" (nzOnOk)="ipOk()" [nzWidth]="width">
+              <ng-container *nzModalContent>
+                <nz-table #ipAnalyseTable [nzData]="ipAnalyseOfData">
+                  <thead>
+                  <tr>
+                    <th>域名</th>
+                    <th>CNAME</th>
+                    <th>网站名称</th>
+                    <th>公司名称</th>
+                    <th>解析次数</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let data of ipAnalyseTable.data">
+                    <td>{{ data.host }}</td>
+                    <td>{{ data.cname }}</td>
+                    <td>{{ data.webName }}</td>
+                    <td>{{ data.compName }}</td>
+                    <td>{{ data.analyseTimes }}</td>
+                  </tr>
+                  </tbody>
+                </nz-table>
+              </ng-container>
+            </nz-modal>
+          </ng-container>
+        </nz-modal>
+      </nz-tab>
+
+      <nz-tab nzTitle="系统分析">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label nzFor="dateRange">时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label nzFor="granularity">时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+
+            </nz-row>
+          </form>
+        </div>
+        <nz-row nzGutter="10">
+          <div nz-col nzSpan="8">
+            <nz-row [nzGutter]="16">
+              <nz-col [nzSpan]="12">
+                <nz-card>
+                  <nz-statistic
+                    [nzValue]="8374914"
+                    [nzTitle]="'V4查询次数'"
+                    [nzPrefix]="prefixTplOne"
+                    [nzSuffix]="'次'"
+                    [nzValueStyle]="{ color: '#3F8600' }"
+                  >
+                  </nz-statistic>
+                  <ng-template #prefixTplOne><i nz-icon nzType="arrow-up"></i></ng-template>
+                </nz-card>
+              </nz-col>
+              <nz-col [nzSpan]="12">
+                <nz-card>
+                  <nz-statistic
+                    [nzValue]="4759390"
+                    [nzTitle]="'V6查询次数'"
+                    [nzPrefix]="prefixTplTwo"
+                    [nzSuffix]="'次'"
+                    [nzValueStyle]="{ color: '#3F8600' }"
+                  >
+                  </nz-statistic>
+                  <ng-template #prefixTplTwo><i nz-icon nzType="arrow-up"></i></ng-template>
+                </nz-card>
+              </nz-col>
+            </nz-row>
+            <nz-row [nzGutter]="16" style="margin-top: 10px">
+              <nz-col [nzSpan]="12">
+                <nz-card>
+                  <nz-statistic
+                    [nzValue]="43"
+                    [nzTitle]="'V6渗透率'"
+                    [nzSuffix]="'%'"
+                    [nzValueStyle]="{ color: '#3F8600' }"
+                  >
+                  </nz-statistic>
+                </nz-card>
+              </nz-col>
+              <nz-col [nzSpan]="12">
+                <nz-card>
+                  <nz-statistic
+                    [nzValue]="48"
+                    [nzTitle]="'V6覆盖率'"
+                    [nzSuffix]="'%'"
+                    [nzValueStyle]="{ color: '#3F8600' }"
+                  >
+                  </nz-statistic>
+                </nz-card>
+              </nz-col>
+            </nz-row>
+          </div>
+          <div nz-col nzSpan="16">
+            <div echarts [options]="rate"></div>
+          </div>
+
+        </nz-row>
+        <nz-card style="width:100%;">
+          <nz-row nzGutter="10">
+            <nz-col nzSpan="8">
+              <nz-statistic [nzValue]="481"
+                            [nzTitle]="'累计分析日志量'"
+                            [nzSuffix]="'TB'"
+              ></nz-statistic>
+            </nz-col>
+            <nz-col nzSpan="8">
+              <nz-statistic [nzValue]="299581853"
+                            [nzTitle]="'总分析条目'"
+                            [nzSuffix]="'条'"
+              ></nz-statistic>
+            </nz-col>
+            <nz-col nzSpan="8">
+              <nz-statistic [nzValue]="145"
+                            [nzTitle]="'系统运行时间'"
+                            [nzSuffix]="'天'"
+              ></nz-statistic>
+            </nz-col>
+          </nz-row>
+        </nz-card>
+      </nz-tab>
+    </nz-tabset>
+  </app-content-body>
+</app-main-content>

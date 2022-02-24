@@ -1,0 +1,106 @@
+<app-main-content>
+  <app-content-header title="统计分析">
+  </app-content-header>
+  <app-content-body>
+    <nz-tabset nzSize="small">
+      <nz-tab nzTitle="错误域名统计分析">
+        <nz-row>
+          <nz-col nzSpan="12">
+            <div echarts [options]="errorBarOption"></div>
+          </nz-col>
+          <nz-col nzSpan="12">
+            <div echarts [options]="errorPieOption"></div>
+          </nz-col>
+        </nz-row>
+        <nz-table #dnsErrorTable [nzData]="errorDomainNameList" nzSize="small">
+          <thead>
+          <tr>
+            <th nzAlign="center" *ngFor="let column of errorDomainNameOfColumn" [nzShowSort]="column.flag"
+                [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of dnsErrorTable.data">
+            <td nzAlign="center">{{data.id}}</td>
+            <td nzAlign="center">{{data.domainName}}</td>
+            <td nzAlign="center">{{data.selectCount}}</td>
+            <td nzAlign="center">{{data.errorCount}}</td>
+            <td nzAlign="center">{{data.formatErrorCount}}</td>
+            <td nzAlign="center">{{data.serviceNoResponseCount}}</td>
+            <td nzAlign="center">{{data.nameErrorCount}}</td>
+            <td nzAlign="center">{{data.dnsNotSupportCount }}</td>
+            <td nzAlign="center">{{data.denialServiceCount}}</td>
+            <td nzAlign="center">{{data.otherErrorCount }}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="重点域名统计分析">
+        <form nz-form>
+          <nz-row nzGutter="24">
+            <nz-col nzSpan="4">
+              <nz-form-item>
+                <nz-form-label>分类</nz-form-label>
+                <nz-form-control>
+                  <nz-select [(ngModel)]="type" name="type">
+                    <nz-option [nzValue]="0" nzLabel="预定义类型"></nz-option>
+                    <nz-option [nzValue]="1" nzLabel="分析类型"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col nzSpan="4">
+              <nz-form-item>
+                <button nz-button (click)="search()" [nzType]="'primary'">查询</button>
+                <button style="margin-left: 12px" nz-button (click)="reset()">重置</button>
+              </nz-form-item>
+            </nz-col>
+          </nz-row>
+        </form>
+        <nz-table #keynoteTable [nzData]="keynoteDomainNameList" nzSize="small">
+          <thead>
+          <tr>
+            <th nzAlign="center" *ngFor="let column of keynoteDomainNameOfColumn" [nzShowSort]="column.flag"
+                [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of keynoteTable.data">
+            <td nzAlign="center">{{data.id}}</td>
+            <td nzAlign="center">{{data.domainName}}</td>
+            <td nzAlign="center">{{data.serviceBig}}</td>
+            <td nzAlign="center">{{data.serviceLittle}}</td>
+            <td nzAlign="center">{{data.selectCount| number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.outNetCount | number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.inNetCount | number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.proportion | number:'1.0-2'}} %</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="分布统计图">
+        <div echarts [options]="allOption"></div>
+        <nz-table #basicTable [nzData]="listOfData">
+          <thead>
+          <tr>
+            <th>域名</th>
+            <th>DNS查询次数</th>
+            <th>国内次数</th>
+            <th>出网次数</th>
+            <th>请求占比</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of basicTable.data">
+            <td>{{ data.host }}</td>
+            <td>{{ data.dns }}</td>
+            <td>{{ data.inc }}</td>
+            <td>{{ data.outNet }}</td>
+            <td>{{ data.rate }}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+  </app-content-body>
+</app-main-content>

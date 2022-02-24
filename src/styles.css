@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+/**
+工具栏样式
+ */
+.toolbar{
+
+}
+.toolbar .ant-row {
+  width: 100%;
+}
+
+.toolbar .ant-form-inline .ant-form-item {
+  margin-bottom: 16px;
+}
+.toolbar button:first-child{
+  margin-left: 0;
+}
+.toolbar button{
+  margin-left: 10px;
+}

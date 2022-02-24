@@ -1,0 +1,144 @@
+<app-main-content>
+  <app-content-header title="dns日志分析">
+  </app-content-header>
+  <app-content-body>
+    <nz-tabset nzSize="small">
+      <nz-tab nzTitle="公司信息维度">
+        <form nz-form>
+          <nz-row nzGutter="24">
+            <nz-col nzSpan="4">
+              <nz-form-item>
+                <nz-form-label>用户类型</nz-form-label>
+                <nz-form-control>
+                  <nz-select [(ngModel)]="userType" name="type">
+                    <nz-option [nzValue]="0" nzLabel="全部"></nz-option>
+                    <nz-option [nzValue]="1" nzLabel="固网"></nz-option>
+                    <nz-option [nzValue]="2" nzLabel="手机"></nz-option>
+                    <nz-option [nzValue]="3" nzLabel="专线"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col nzSpan="4">
+              <nz-form-item>
+                <button nz-button (click)="search()" [nzType]="'primary'">查询</button>
+                <button style="margin-left: 12px" nz-button (click)="reset()">重置</button>
+              </nz-form-item>
+            </nz-col>
+          </nz-row>
+        </form>
+        <nz-table #companyTable [nzData]="companyList" nzSize="small">
+          <thead>
+          <tr>
+            <th nzAlign="center" *ngFor="let column of companyOfColumn" [nzShowSort]="column.flag"
+                [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of companyTable.data">
+            <td nzAlign="center">{{data.id}}</td>
+            <td nzAlign="center">{{data.companyName}}</td>
+            <td nzAlign="center">{{data.selectNumber | number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.outNetCount | number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.inNetCount | number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.netSelfRate | number:'1.0-2'}} %</td>
+            <td nzAlign="center">{{data.provinceSelfRate | number:'1.0-2'}} %</td>
+            <td nzAlign="center">{{data.domainNumber | number:'1.0-2'}}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="网站信息维度">
+        <form nz-form>
+          <nz-row nzGutter="24">
+            <nz-col nzSpan="4">
+              <nz-form-item>
+                <nz-form-label>用户类型</nz-form-label>
+                <nz-form-control>
+                  <nz-select [(ngModel)]="userType" name="type">
+                    <nz-option [nzValue]="0" nzLabel="全部"></nz-option>
+                    <nz-option [nzValue]="1" nzLabel="固网"></nz-option>
+                    <nz-option [nzValue]="2" nzLabel="手机"></nz-option>
+                    <nz-option [nzValue]="3" nzLabel="专线"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col nzSpan="4">
+              <nz-form-item>
+                <button nz-button (click)="search()" [nzType]="'primary'">查询</button>
+                <button style="margin-left: 12px" nz-button (click)="reset()">重置</button>
+              </nz-form-item>
+            </nz-col>
+          </nz-row>
+        </form>
+        <nz-table #websiteTable [nzData]="websiteList" nzSize="small">
+          <thead>
+          <tr>
+            <th nzAlign="center" *ngFor="let column of websiteOfColumn" [nzShowSort]="column.flag"
+                [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of websiteTable.data">
+            <td nzAlign="center">{{data.id}}</td>
+            <td nzAlign="center">{{data.websiteName}}</td>
+            <td nzAlign="center">{{data.selectNumber | number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.outNetCount | number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.inNetCount | number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.netSelfRate | number:'1.0-2'}} %</td>
+            <td nzAlign="center">{{data.provinceSelfRate | number:'1.0-2'}} %</td>
+            <td nzAlign="center">{{data.domainNumber | number:'1.0-2'}}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="域名/域信息维度">
+        <form nz-form>
+          <nz-row nzGutter="24">
+            <nz-col nzSpan="4">
+              <nz-form-item>
+                <nz-form-label>用户类型</nz-form-label>
+                <nz-form-control>
+                  <nz-select [(ngModel)]="userType" name="type">
+                    <nz-option [nzValue]="0" nzLabel="全部"></nz-option>
+                    <nz-option [nzValue]="1" nzLabel="固网"></nz-option>
+                    <nz-option [nzValue]="2" nzLabel="手机"></nz-option>
+                    <nz-option [nzValue]="3" nzLabel="专线"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </nz-col>
+            <nz-col nzSpan="4">
+              <nz-form-item>
+                <button nz-button (click)="search()" [nzType]="'primary'">查询</button>
+                <button style="margin-left: 12px" nz-button (click)="reset()">重置</button>
+              </nz-form-item>
+            </nz-col>
+          </nz-row>
+        </form>
+        <nz-table #domainTable [nzData]="domainList" nzSize="small">
+          <thead>
+          <tr>
+            <th nzAlign="center" *ngFor="let column of domainOfColumn" [nzShowSort]="column.flag"
+                [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of domainTable.data">
+            <td nzAlign="center">{{data.id}}</td>
+            <td nzAlign="center">{{data.domainName}}</td>
+            <td nzAlign="center">{{data.selectNumber | number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.outNetCount | number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.inNetCount | number:'1.0-2'}} 万次</td>
+            <td nzAlign="center">{{data.netSelfRate | number:'1.0-2'}} %</td>
+            <td nzAlign="center">{{data.provinceSelfRate | number:'1.0-2'}} %</td>
+            <td nzAlign="center">{{data.domainNumber}}</td>
+            <td nzAlign="center">{{data.companyName}}</td>
+          </tr>
+          </tbody>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+  </app-content-body>
+</app-main-content>

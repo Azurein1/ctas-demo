@@ -1,0 +1,424 @@
+<app-main-content>
+  <app-content-header title="采集设备与数据">
+  </app-content-header>
+  <app-content-body>
+    <nz-tabset>
+      <nz-tab nzTitle="采集设备配置">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label nzFor="dateRange">设备名</nz-form-label>
+                  <nz-form-control>
+                    <input formControlName="equipName" nz-input placeholder="设备名"/>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>厂商</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="firmId">
+                      <nz-option [nzValue]="1" nzLabel="华为"></nz-option>
+                      <nz-option [nzValue]="2" nzLabel="贝尔"></nz-option>
+                      <nz-option [nzValue]="3" nzLabel="Cisco"></nz-option>
+                      <nz-option [nzValue]="4" nzLabel="Juniper"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>采样技术</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="equipTypeId">
+                      <nz-option [nzValue]='0' nzLabel="Netflow"></nz-option>
+                      <nz-option [nzValue]='1' nzLabel="cflow"></nz-option>
+                      <nz-option [nzValue]='2' nzLabel="sflow"></nz-option>
+                      <nz-option [nzValue]='3' nzLabel="Netstream"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+
+            </nz-row>
+          </form>
+        </div>
+        <nz-table
+          [nzTitle]="confTableTitle"
+
+          [nzBordered]="true" #confTable
+          [nzShowPagination]="true"
+          [nzFrontPagination]="true"
+          [nzSize]="'small'"
+          [nzLoading]="confNzLoading"
+          [nzData]="confDataList"
+
+        >
+          <ng-template #confTableTitle>
+            <span>采集配置信息</span>
+            <button style="float: right" nz-button nzType="primary" (click)="openConfModal()"><i nz-icon
+                                                                                                 nzType="plus"
+                                                                                                 nzTheme="outline"></i>添加
+            </button>
+          </ng-template>
+          <thead>
+          <tr>
+            <th nzWidth="50px">序号</th>
+            <th nzWidth="50px">设备名</th>
+            <th nzWidth="50px">厂商</th>
+            <th nzWidth="60px">采样技术</th>
+            <th nzWidth="80px">IP版本支持</th>
+            <th nzWidth="80px">路由器采样率</th>
+            <th nzWidth="100px">BGP版本支持</th>
+            <th nzWidth="100px">BGP 4byte AS号</th>
+            <th nzWidth="70px">SNMP协议</th>
+            <th nzWidth="80px">IP地址</th>
+            <th nzWidth="150px">BGP Peer</th>
+            <th nzWidth="100px">ICP备案</th>
+            <th nzWidth="110px">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of confTable.data,index as i">
+            <td>{{i + 1}}</td>
+            <td>{{data.equipName}}</td>
+            <td>{{data.firmName}}</td>
+            <td>{{data.equipTypeName}}</td>
+            <td>{{data.ipVersion}}</td>
+            <td>{{data.routerSampling}}</td>
+            <td>{{data.bgp}}</td>
+            <td>{{data.as4Byte}}</td>
+            <td>{{data.snmp}}</td>
+            <td>{{data.ipAddress}}</td>
+            <td>{{data.bgpPeer}}</td>
+            <td>{{data.icp}}</td>
+            <td>
+              <a nz-button nzType="link" (click)="openConfModal(data.id)">编辑</a>
+              <a
+                nzDanger
+                nz-button
+                nzType="link"
+                nz-popconfirm
+                nzPopconfirmTitle="确定删除该采集配置信息吗？"
+                nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="deleteConf(data.id)"
+              >删除</a
+              >
+            </td>
+          </tr>
+          </tbody>
+        </nz-table>
+        <nz-table
+          #sysTable
+          nzBordered
+          nzSize="small"
+          [nzData]="sysDataList"
+          [nzTitle]="sysTableTitle"
+          [nzShowPagination]="true"
+          [nzFrontPagination]="true"
+          [nzLoading]="sysNzLoading"
+        >
+          <ng-template #sysTableTitle>
+            采集系统服务器信息（系统剩余内存160GB，剩余硬盘20TB）
+            <div style="float: right;">
+              <button style="margin-right: 8px;" nz-button nzType="primary" (click)="startEdit()"><i nz-icon
+                                                                                                     nzType="plus"
+                                                                                                     nzTheme="outline"></i>添加服务器
+              </button>
+              <button
+                nzDanger
+                nz-button
+                nz-popconfirm
+                nzPopconfirmTitle="确定删除所选择的采集系统服务器信息吗？"
+                nzPopconfirmPlacement="bottom"
+                (nzOnConfirm)="deleteSys()"
+              ><i nz-icon nzType="delete" nzTheme="outline"></i>删除
+              </button
+              >
+            </div>
+          </ng-template>
+          <thead>
+          <tr>
+            <th nzAlign="center" nzWidth="30px" [nzChecked]="allChecked" [nzIndeterminate]="indeterminate"
+                (nzCheckedChange)="onAllChecked($event)"></th>
+            <th nzAlign="center" nzWidth="50px">序号</th>
+            <th nzAlign="center" nzWidth="100px">服务器</th>
+            <th nzAlign="center" nzWidth="100px">硬盘</th>
+            <th nzAlign="center" nzWidth="100px">内存</th>
+            <th nzAlign="center" nzWidth="100px">操作</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of sysTable.data;index as index">
+            <ng-container *ngIf="!editCache[data.id].edit; else editTemplate">
+              <td [nzChecked]="setOfCheckedId.has(data.id)"
+                  [nzDisabled]="data.disabled"
+                  (nzCheckedChange)="onItemChecked(data.id, $event)"></td>
+              <td nzAlign="center">{{data.id}}</td>
+              <td nzAlign="center">{{data.serverName}}</td>
+              <td nzAlign="center">{{data.hardDisk}}</td>
+              <td nzAlign="center">{{data.memory}}</td>
+              <td nzAlign="center">
+                <a nz-button nzType="link" (click)="startEdit(data.id)">性能调整</a>
+                <a
+                  nzDanger
+                  nz-button
+                  nzType="link"
+                  nz-popconfirm
+                  nzPopconfirmTitle="确定删除该采集系统服务器信息吗？"
+                  nzPopconfirmPlacement="bottom"
+                  (nzOnConfirm)="deleteSys(data.id)"
+                >删除</a
+                >
+              </td>
+            </ng-container>
+            <ng-template #editTemplate>
+              <td></td>
+              <td></td>
+              <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.serverName"/></td>
+              <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.hardDisk"/></td>
+              <td><input type="text" nz-input [(ngModel)]="editCache[data.id].data.memory"/></td>
+              <td nzAlign="center">
+                <a nz-button nzType="link" (click)="saveEdit(data.id)" class="save">保存</a>
+                <a nz-button nzType="link" (click)="cancelEdit(data.id)">取消</a>
+              </td>
+            </ng-template>
+          </tr>
+          </tbody>
+        </nz-table>
+        <ng-template #confTableTitle>
+          <span>采集配置信息</span>
+          <button style="float: right" nz-button nzType="primary" (click)="openConfModal()"><i nz-icon
+                                                                                               nzType="plus"
+                                                                                               nzTheme="outline"></i>添加
+          </button>
+        </ng-template>
+
+
+      </nz-tab>
+      <nz-tab nzTitle="采集数据">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label nzFor="dateRange">时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="searchA()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+            </nz-row>
+          </form>
+        </div>
+        <nz-table #nzTable [nzData]="dataCollectionTable" nzTableLayout="fixed" [nzPageSize]="10">
+          <thead>
+          <tr>
+            <th>序号</th>
+            <th>路由</th>
+            <th nzCustomFilter>
+              端口
+              <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0"
+                                 [nzDropdownMenu]="menu">
+                <i nz-icon nzType="search"></i>
+              </nz-filter-trigger>
+            </th>
+            <th>域名</th>
+            <th>存储有效期</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of nzTable.data">
+            <td>{{data.id}}</td>
+            <td>{{data.routing}}</td>
+            <td>{{data.port}}</td>
+            <td>{{data.host}}</td>
+            <td>{{data.validity}}</td>
+          </tr>
+          </tbody>
+          <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+        </nz-table>
+        <nz-dropdown-menu #menu="nzDropdownMenu">
+          <div class="ant-table-filter-dropdown">
+            <div class="search-box">
+              <input type="text" nz-input placeholder="搜索端口" [(ngModel)]="searchValue"/>
+              <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                搜索
+              </button>
+              <button nz-button nzSize="small" (click)="reset()">重置</button>
+            </div>
+          </div>
+        </nz-dropdown-menu>
+      </nz-tab>
+    </nz-tabset>
+  </app-content-body>
+</app-main-content>
+
+<nz-modal
+  nzWidth="800px"
+  [nzTitle]="confFormTitle"
+  [nzOkText]="'确定'"
+  [nzCancelText]="'取消'"
+  [(nzVisible)]="confModalVisible"
+  (nzOnOk)="saveOrUpdateConf()"
+  (nzOnCancel)="hideConfModal()"
+  [nzOkLoading]="confModalOkLoading"
+>
+  <form nz-form [formGroup]="saveOrUpdateConfForm">
+    <nz-row nzGutter="24">
+      <nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzRequired [nzSm]="6" [nzXs]="24" nzFor="equipName">设备名</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入设备名">
+            <input formControlName="equipName" nz-input id="equipName"/>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzRequired [nzSm]="6" [nzXs]="24" nzFor="ipAddress">IP地址</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入IP地址">
+            <input formControlName="ipAddress" nz-input id="ipAddress"/>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+    <nz-row nzGutter="24">
+      <nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzRequired [nzSm]="6" [nzXs]="24" nzFor="firmId">设备厂商</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择厂商">
+            <nz-select formControlName="firmId" id="firmId" (ngModelChange)="selectFirm($event)">
+              <nz-option [nzValue]="1" nzLabel="华为"></nz-option>
+              <nz-option [nzValue]="2" nzLabel="贝尔"></nz-option>
+              <nz-option [nzValue]="3" nzLabel="Cisco"></nz-option>
+              <nz-option [nzValue]="4" nzLabel="Juniper"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzRequired [nzSm]="6" [nzXs]="24" nzFor="equipTypeId">采样技术</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择采样技术">
+            <nz-select formControlName="equipTypeId" id="equipTypeId" (ngModelChange)="selectFirm($event)">
+              <nz-option [nzValue]='0' nzLabel="Netflow"></nz-option>
+              <nz-option [nzValue]='1' nzLabel="cflow"></nz-option>
+              <nz-option [nzValue]='2' nzLabel="sflow"></nz-option>
+              <nz-option [nzValue]='3' nzLabel="Netstream"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+    <nz-row nzGutter="24">
+      <nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="routerSampling">路由器采样率</nz-form-label>
+          <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="请选择路由器采样率">
+            <nz-select formControlName="routerSampling" id="routerSampling" (ngModelChange)="selectFirm($event)">
+              <nz-option [nzValue]='0' nzLabel="1:1"></nz-option>
+              <nz-option [nzValue]='1' nzLabel="2:1"></nz-option>
+              <nz-option [nzValue]='1' nzLabel="6:1"></nz-option>
+              <nz-option [nzValue]='2' nzLabel="10:1"></nz-option>
+              <nz-option [nzValue]='3' nzLabel="20:1"></nz-option>
+              <nz-option [nzValue]='4' nzLabel="50:1"></nz-option>
+              <nz-option [nzValue]='5' nzLabel="100:1"></nz-option>
+              <nz-option [nzValue]='6' nzLabel="200:1"></nz-option>
+              <nz-option [nzValue]='7' nzLabel="500:1"></nz-option>
+              <nz-option [nzValue]='8' nzLabel="1000:1"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="routerSampling">IP版本支持</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择IP版本">
+            <nz-select formControlName="ipVersion" id="ipVersion" (ngModelChange)="selectFirm($event)">
+              <nz-option [nzValue]='0' nzLabel="IPV4,IPV6"></nz-option>
+              <nz-option [nzValue]='1' nzLabel="IPV4"></nz-option>
+              <nz-option [nzValue]='1' nzLabel="IPV6"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+    <nz-row nzGutter="24">
+      <nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label [nzSm]="6" [nzXs]="24" nzRequired nzFor="bgp">BGP协议</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择BGP协议">
+            <nz-radio-group formControlName="bgp" id="bgp">
+              <label nz-radio nzValue="A">V4</label>
+              <label nz-radio nzValue="B">V6</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzRequired [nzSm]="6" [nzXs]="24" nzFor="snmp">SNMP协议</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请选择snmp协议版本">
+            <nz-radio-group formControlName="snmp" id="snmp">
+              <label nz-radio nzValue="A">V2</label>
+              <label nz-radio nzValue="B">V3</label>
+            </nz-radio-group>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+    <nz-row nzGutter="24">
+      <nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label nzRequired [nzSm]="6" [nzXs]="24" nzFor="bgpPeer">BGP Peer</nz-form-label>
+          <nz-form-control [nzSm]="14" [nzXs]="24" nzErrorTip="请输入BGP Peer">
+            <input formControlName="bgpPeer" appInputType="notBlank" nz-input id="bgpPeer"/>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+      <nz-col nzSpan="12">
+        <nz-form-item>
+          <nz-form-label [nzSm]="8" [nzXs]="24" nzRequired nzFor="icp">ICP备案信息</nz-form-label>
+          <nz-form-control [nzSm]="12" [nzXs]="24" nzErrorTip="请输入ICP备案信息">
+            <input formControlName="icp" appInputType="notBlank" nz-input id="icp"/>
+          </nz-form-control>
+        </nz-form-item>
+      </nz-col>
+    </nz-row>
+  </form>
+</nz-modal>

@@ -1,0 +1,180 @@
+<app-main-content>
+  <app-content-header title="IP地址库">
+  </app-content-header>
+  <app-content-body>
+    <form nz-form>
+      <nz-row nzGutter="10">
+        <nz-col nzSpan="3">
+          <nz-form-item>
+            <nz-form-label nzSpan="6">关键字</nz-form-label>
+            <nz-form-control>
+              <input nz-input />
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzSpan="3">
+          <nz-form-item>
+            <nz-form-label nzSpan="6">类型</nz-form-label>
+            <nz-form-control>
+              <nz-select ngModel="all">
+                <nz-option nzLabel="全部" nzValue="all"></nz-option>
+                <nz-option nzLabel="IDC" nzValue="idc"></nz-option>
+                <nz-option nzLabel="CDN" nzValue="cdn"></nz-option>
+                <nz-option nzLabel="IPTV" nzValue="iptv"></nz-option>
+                <nz-option nzLabel="专线" nzValue="spec"></nz-option>
+                <nz-option nzLabel="固网" nzValue="st"></nz-option>
+                <nz-option nzLabel="家宽" nzValue="fam"></nz-option>
+              </nz-select>
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzSpan="3">
+          <nz-form-item>
+            <nz-form-label nzSpan="6">省份</nz-form-label>
+            <nz-form-control>
+              <input nz-input />
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzSpan="11">
+          <button nz-button nzType="primary" (click)="getIpData()">查询</button>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzType="default" type="reset" (click)="reset()">重置</button>
+        </nz-col>
+        <nz-col nzSpan="4">
+          <nz-row>
+            <nz-upload
+              nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              [nzHeaders]="{ authorization: 'authorization-text' }"
+            >
+              <button nz-button>
+                <i nz-icon nzType="upload"></i>
+                导入
+              </button>
+            </nz-upload>
+            <nz-divider nzType="vertical"></nz-divider>
+            <button nz-button nzType="primary">导出</button>
+            <nz-divider nzType="vertical"></nz-divider>
+            <button nz-button nzType="primary" (click)="showAdd()">新增</button>
+          </nz-row>
+        </nz-col>
+      </nz-row>
+    </form>
+
+    <nz-table #ipTable [nzData]="ipData">
+      <thead>
+      <tr>
+        <th>起始IP</th>
+        <th>结束IP</th>
+        <th>IP类型</th>
+        <th>接入类型</th>
+        <th>业务类型</th>
+        <th>所属业务</th>
+        <th>运营商</th>
+        <th>国家</th>
+        <th>省份</th>
+        <th>地市</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of ipTable.data">
+        <td>{{data.ipStart}}</td>
+        <td>{{data.ipEnd}}</td>
+        <td>{{data.ipType}}</td>
+        <td>{{data.interType}}</td>
+        <td>{{data.serviceType}}</td>
+        <td>{{data.belonging}}</td>
+        <td>{{data.operator}}</td>
+        <td>{{data.country}}</td>
+        <td>{{data.province}}</td>
+        <td>{{data.city}}</td>
+        <td><a>修改</a><nz-divider nzType="vertical"></nz-divider><a>删除</a></td>
+      </tr>
+      </tbody>
+    </nz-table>
+
+    <nz-drawer
+      [nzBodyStyle]="{ overflow: 'auto' }"
+      [nzMaskClosable]="false"
+      [nzWidth]="520"
+      [nzVisible]="addVisible"
+      nzTitle="新增IP数据"
+      [nzFooter]="footerTpl"
+      (nzOnClose)="addClose()"
+    >
+      <form nz-form *nzDrawerContent>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="email">起始IP</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="email">结束IP</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="email">IP类型</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <nz-select>
+              <nz-option nzLabel="IPV4" nzValue="ipv4"></nz-option>
+              <nz-option nzLabel="IPV6" nzValue="ipv6"></nz-option>
+            </nz-select>
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" >接入类型</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" >业务类型</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" >所属业务</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" >运营商</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" >国家</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" >省份</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" >城市</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+      </form>
+
+      <ng-template #footerTpl>
+        <div style="float: right">
+          <button nz-button style="margin-right: 8px;" (click)="addClose()">取消</button>
+          <button nz-button nzType="primary" (click)="addClose()">确认</button>
+        </div>
+      </ng-template>
+    </nz-drawer>
+  </app-content-body>
+</app-main-content>

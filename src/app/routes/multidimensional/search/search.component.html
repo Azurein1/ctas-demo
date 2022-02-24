@@ -1,0 +1,74 @@
+<app-main-content>
+  <app-content-header title="查询">
+  </app-content-header>
+  <app-content-body>
+    <nz-row nzGutter="24" nzJustify="center">
+      <h4 nz-typography>
+        自定义维度显示：
+        <div style="border-bottom: 1px solid rgb(233, 233, 233);">
+          <label nz-checkbox [(ngModel)]="allChecked" (ngModelChange)="updateAllChecked()"
+                 [nzIndeterminate]="indeterminate">
+            全部显示
+          </label>
+        </div>
+        <br/>
+        <nz-checkbox-group [(ngModel)]="checkOptionsOne" (ngModelChange)="updateSingleChecked()"></nz-checkbox-group>
+      </h4>
+    </nz-row>
+
+    <nz-row nzGutter="24" nzJustify="center">
+      <div nz-col *ngIf="showMap.get('app')">
+        <a routerLink="/data-presentation/app-data">
+          <nz-card nzHoverable style="width:240px; height: 360px" [nzCover]="appImgTemplate" [nzExtra]="appTemplate">
+            <nz-card-meta nzTitle="应用相关数据" nzDescription="应用维度数据呈现"></nz-card-meta>
+          </nz-card>
+          <ng-template #appImgTemplate>
+            <img alt="example" src="/assets/img/1.png"/>
+          </ng-template>
+          <ng-template #appTemplate>
+          </ng-template>
+        </a>
+      </div>
+      <div nz-col *ngIf="showMap.get('dns')">
+        <a routerLink="/data-presentation/dns-data">
+          <nz-card nzHoverable style="width:240px; height: 360px" [nzCover]="dnsImgTemplate" [nzExtra]="dnsTemplate">
+            <nz-card-meta nzTitle="DNS相关数据" nzDescription="DNS维度数据呈现"></nz-card-meta>
+          </nz-card>
+          <ng-template #dnsImgTemplate>
+            <img alt="example" src="/assets/img/4.jpg"/>
+          </ng-template>
+          <ng-template #dnsTemplate>
+          </ng-template>
+        </a>
+      </div>
+      <nz-row nzGutter="24" nzJustify="center">
+        <div nz-col *ngIf="showMap.get('protocol')">
+          <a routerLink="/data-presentation/protocol-data">
+            <nz-card nzHoverable style="width:240px; height: 360px" [nzCover]="protocolImgTemplate"
+                     [nzExtra]="protocolTemplate">
+              <nz-card-meta nzTitle="通信协议相关数据" nzDescription="通信协议维度数据呈现"></nz-card-meta>
+            </nz-card>
+            <ng-template #protocolImgTemplate>
+              <img alt="example" src="/assets/img/3.jpg"/>
+            </ng-template>
+            <ng-template #protocolTemplate>
+            </ng-template>
+          </a>
+        </div>
+        <div nz-col *ngIf="showMap.get('idcCdn')">
+          <a routerLink="/data-presentation/cdn-idc-custom">
+            <nz-card nzHoverable style="width:240px; height: 360px" [nzCover]="cdnIdcImgTemplate"
+                     [nzExtra]="cdnIdcTemplate">
+              <nz-card-meta nzTitle="CDN、IDC相关数据" nzDescription="CDN及IDC商户维度数据呈现"></nz-card-meta>
+            </nz-card>
+            <ng-template #cdnIdcImgTemplate>
+              <img alt="example" src="/assets/img/2.jpg"/>
+            </ng-template>
+            <ng-template #cdnIdcTemplate>
+            </ng-template>
+          </a>
+        </div>
+      </nz-row>
+    </nz-row>
+  </app-content-body>
+</app-main-content>

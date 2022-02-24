@@ -1,0 +1,449 @@
+<app-main-content>
+  <app-content-header title="CDN数据">
+  </app-content-header>
+  <app-content-body>
+    <nz-tabset>
+      <nz-tab nzTitle="CDN数据汇总">
+<!--        查询-->
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label nzFor="dateRange">时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker id="dateRange" [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+            </nz-row>
+          </form>
+        </div>
+<!--        两个charts-->
+        <div nz-row>
+          <div nz-col nzSpan="14">
+            <div echarts [options]="cdnResourceBarOption"></div>
+          </div>
+          <div nz-col nzSpan="10">
+            <div echarts [options]="cdnAccuracyBarOption"></div>
+          </div>
+        </div>
+<!--        数据table-->
+        <nz-table [nzData]="cdnSummaryTable">
+          <thead>
+          <tr>
+            <th nzAlign="center" *ngFor="let column of cdnSummaryTableTitle"
+                [nzShowSort]="column.flag"
+                [nzSortFn]="column.compare"
+                [nzSortPriority]="column.priority">{{column.title}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of cdnSummaryTable">
+            <td nzAlign="center">{{data.id}}</td>
+            <td nzAlign="center">{{data.business}}</td>
+            <td nzAlign="center">{{data.clicks}}</td>
+            <td nzAlign="center">{{data.hosts}}</td>
+            <td nzAlign="center">{{data.outHosts}}</td>
+            <td nzAlign="center">{{data.inNetRate}}</td>
+            <td nzAlign="center">{{data.inProRate}}</td>
+            <td nzAlign="center">{{data.inHostRate}}</td>
+            <td nzAlign="center">{{data.outHostRate}}</td>
+            <td nzAlign="center">{{data.bgp}}</td>
+            <td nzAlign="center">{{data.outHost}}</td>
+            <td nzAlign="center">{{data.unStable}}</td>
+            <td nzAlign="center">{{data.toPro}}</td>
+            <td nzAlign="center">{{data.toOut}}</td>
+            <td nzAlign="center">{{data.tobgp}}</td>
+            <td nzAlign="center">{{data.out}}</td>
+            <td nzAlign="center">{{data.un}}</td>
+          </tr>
+          </tbody>
+          <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+        </nz-table>
+      </nz-tab>
+
+      <nz-tab nzTitle="CDN数据分析">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label nzFor="dateRange">时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+            </nz-row>
+          </form>
+        </div>
+<!--        统计表格（左）-->
+        <div nz-row>
+          <div nz-col nzSpan="12">
+            <nz-row [nzGutter]="16">
+              <nz-col [nzSpan]="12">
+                <nz-statistic [nzValue]="(50292 | number)!" [nzTitle]="'CDN全部泛域名个数'"
+                              [nzPrefix]="prefixDomain"></nz-statistic>
+                <ng-template #prefixDomain><i nz-icon nzType="align-left" nzTheme="outline"></i></ng-template>
+              </nz-col>
+              <nz-col [nzSpan]="12">
+                <nz-statistic [nzValue]="(160465 | number)!" [nzTitle]="'CDN域名个数'"
+                              [nzPrefix]="prefixHost"></nz-statistic>
+                <ng-template #prefixHost><i nz-icon nzType="align-center" nzTheme="outline"></i></ng-template>
+              </nz-col>
+              <nz-col [nzSpan]="12" style="margin-top: 32px;">
+                <nz-statistic [nzValue]="(18550887560 | number)!" [nzTitle]="'CDN全部点击次数'"
+                              [nzPrefix]="prefixSelect"></nz-statistic>
+              </nz-col>
+              <ng-template #prefixSelect><i nz-icon nzType="select" nzTheme="outline"></i></ng-template>
+            </nz-row>
+          </div>
+<!--          统计表格（右）-->
+          <div nz-col nzSpan="12">
+            <nz-row [nzGutter]="16">
+              <nz-col [nzSpan]="12">
+                <nz-card>
+                  <nz-statistic
+                    [nzValue]="76.39"
+                    [nzTitle]="'CDN引入域名调度准确率'"
+                    [nzPrefix]="prefixTplOne"
+                    [nzSuffix]="'%'"
+                    [nzValueStyle]="{ color: '#3F8600' }"
+                  >
+                  </nz-statistic>
+                  <ng-template #prefixTplOne><i nz-icon nzType="arrow-up"></i></ng-template>
+                </nz-card>
+              </nz-col>
+              <nz-col [nzSpan]="12">
+                <nz-card>
+                  <nz-statistic
+                    [nzValue]="30.00"
+                    [nzTitle]="'CDN资源贡献比'"
+                    [nzPrefix]="prefixTplTwo"
+                    [nzSuffix]="'%'"
+                    [nzValueStyle]="{ color: '#CF1322' }"
+                  >
+                  </nz-statistic>
+                  <ng-template #prefixTplTwo><i nz-icon nzType="arrow-down"></i></ng-template>
+                </nz-card>
+              </nz-col>
+            </nz-row>
+          </div>
+        </div>
+<!--        柱状图-->
+        <div nz-col nzSpan="24">
+          <div echarts [options]="cdnTimesBarOption"></div>
+        </div>
+        <nz-table [nzData]="cdnSummaryTable">
+          <thead>
+          <tr>
+            <th nzAlign="center" *ngFor="let column of cdnSummaryTableTitle"
+                [nzShowSort]="column.flag"
+                [nzSortFn]="column.compare"
+                [nzSortPriority]="column.priority">{{column.title}}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of cdnSummaryTable">
+            <td nzAlign="center">{{data.id}}</td>
+            <td nzAlign="center">{{data.business}}</td>
+            <td nzAlign="center">{{data.clicks}}</td>
+            <td nzAlign="center">{{data.hosts}}</td>
+            <td nzAlign="center">{{data.outHosts}}</td>
+            <td nzAlign="center">{{data.inNetRate}}</td>
+            <td nzAlign="center">{{data.inProRate}}</td>
+            <td nzAlign="center">{{data.inHostRate}}</td>
+            <td nzAlign="center">{{data.outHostRate}}</td>
+            <td nzAlign="center">{{data.bgp}}</td>
+            <td nzAlign="center">{{data.outHost}}</td>
+            <td nzAlign="center">{{data.unStable}}</td>
+            <td nzAlign="center">{{data.toPro}}</td>
+            <td nzAlign="center">{{data.toOut}}</td>
+            <td nzAlign="center">{{data.tobgp}}</td>
+            <td nzAlign="center">{{data.out}}</td>
+            <td nzAlign="center">{{data.un}}</td>
+          </tr>
+          </tbody>
+          <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+        </nz-table>
+      </nz-tab>
+
+<!--      <nz-tab nzTitle="深度关联分析">-->
+<!--        <div>-->
+<!--          <form nz-form [formGroup]="selectForm">-->
+<!--            <nz-row nzGutter="24">-->
+<!--              <nz-col nzSpan="8">-->
+<!--                <nz-form-item>-->
+<!--                  <nz-form-label nzFor="dateRange">时间</nz-form-label>-->
+<!--                  <nz-form-control>-->
+<!--                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>-->
+<!--                  </nz-form-control>-->
+<!--                </nz-form-item>-->
+<!--              </nz-col>-->
+<!--              <nz-col nzSpan="4">-->
+<!--                <nz-form-item>-->
+<!--                  <nz-form-label>时间粒度</nz-form-label>-->
+<!--                  <nz-form-control>-->
+<!--                    <nz-select formControlName="granularity">-->
+<!--                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>-->
+<!--                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>-->
+<!--                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>-->
+<!--                    </nz-select>-->
+<!--                  </nz-form-control>-->
+<!--                </nz-form-item>-->
+<!--              </nz-col>-->
+<!--              <nz-col nzSpan="4">-->
+<!--                <nz-form-item>-->
+<!--                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">-->
+<!--                    <i nz-icon nzType="search" nzTheme="outline"></i>-->
+<!--                    查询-->
+<!--                  </button>-->
+<!--                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置-->
+<!--                  </button>-->
+<!--                </nz-form-item>-->
+<!--              </nz-col>-->
+<!--            </nz-row>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--        <nz-table [nzData]="connectionTable" nzBordered>-->
+<!--          <thead>-->
+<!--          <tr>-->
+<!--            <th nzAlign="center" *ngFor="let column of connectionTableTitle"-->
+<!--                [nzShowSort]="column.flag"-->
+<!--                [nzSortFn]="column.compare"-->
+<!--                [nzSortPriority]="column.priority">{{column.title}}</th>-->
+<!--          </tr>-->
+<!--          </thead>-->
+<!--          <tbody>-->
+<!--          <tr *ngFor="let data of connectionTable">-->
+<!--            <td nzAlign="center">{{data.id}}</td>-->
+<!--            <td nzAlign="center">{{data.business}}</td>-->
+<!--            <td nzAlign="center">{{data.cdn1}}</td>-->
+<!--            <td nzAlign="center">{{data.percent1}}</td>-->
+<!--            <td nzAlign="center">{{data.cdn2}}</td>-->
+<!--            <td nzAlign="center">{{data.percent2}}</td>-->
+<!--            <td nzAlign="center">{{data.cdn3}}</td>-->
+<!--            <td nzAlign="center">{{data.percent3}}</td>-->
+<!--            <td nzAlign="center">{{data.cdn4}}</td>-->
+<!--            <td nzAlign="center">{{data.percent4}}</td>-->
+<!--            <td nzAlign="center">{{data.validity}}</td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--          <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>-->
+<!--        </nz-table>-->
+<!--      </nz-tab>-->
+
+<!--      <nz-tab nzTitle="IDC数据汇总">-->
+<!--        <div>-->
+<!--          <form nz-form [formGroup]="selectForm">-->
+<!--            <nz-row nzGutter="24">-->
+<!--              <nz-col nzSpan="8">-->
+<!--                <nz-form-item>-->
+<!--                  <nz-form-label nzFor="dateRange">时间</nz-form-label>-->
+<!--                  <nz-form-control>-->
+<!--                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>-->
+<!--                  </nz-form-control>-->
+<!--                </nz-form-item>-->
+<!--              </nz-col>-->
+<!--              <nz-col nzSpan="4">-->
+<!--                <nz-form-item>-->
+<!--                  <nz-form-label>时间粒度</nz-form-label>-->
+<!--                  <nz-form-control>-->
+<!--                    <nz-select formControlName="granularity">-->
+<!--                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>-->
+<!--                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>-->
+<!--                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>-->
+<!--                    </nz-select>-->
+<!--                  </nz-form-control>-->
+<!--                </nz-form-item>-->
+<!--              </nz-col>-->
+<!--              <nz-col nzSpan="4">-->
+<!--                <nz-form-item>-->
+<!--                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">-->
+<!--                    <i nz-icon nzType="search" nzTheme="outline"></i>-->
+<!--                    查询-->
+<!--                  </button>-->
+<!--                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置-->
+<!--                  </button>-->
+<!--                </nz-form-item>-->
+<!--              </nz-col>-->
+<!--            </nz-row>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--        &lt;!&ndash;        两个charts&ndash;&gt;-->
+<!--        <div nz-row>-->
+<!--          <div nz-col nzSpan="14">-->
+<!--            <div echarts [options]="idcResourceBarOption"></div>-->
+<!--          </div>-->
+<!--          <div nz-col nzSpan="10">-->
+<!--            <div echarts [options]="idcAccuracyBarOption"></div>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash;        数据table&ndash;&gt;-->
+<!--        <nz-table [nzData]="cdnSummaryTable">-->
+<!--          <thead>-->
+<!--          <tr>-->
+<!--            <th nzAlign="center" *ngFor="let column of idcSummaryTableTitle"-->
+<!--                [nzShowSort]="column.flag"-->
+<!--                [nzSortFn]="column.compare"-->
+<!--                [nzSortPriority]="column.priority">{{column.title}}</th>-->
+<!--          </tr>-->
+<!--          </thead>-->
+<!--          <tbody>-->
+<!--          <tr *ngFor="let data of cdnSummaryTable">-->
+<!--            <td nzAlign="center">{{data.id}}</td>-->
+<!--            <td nzAlign="center">{{data.business}}</td>-->
+<!--            <td nzAlign="center">{{data.hosts}}</td>-->
+<!--            <td nzAlign="center">{{data.clicks}}</td>-->
+<!--            <td nzAlign="center">{{data.resouces}}</td>-->
+<!--            <td nzAlign="center">{{data.accuracy}}</td>-->
+<!--            <td nzAlign="center">{{data.validity}}</td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--          <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>-->
+<!--        </nz-table>-->
+<!--      </nz-tab>-->
+
+<!--      <nz-tab nzTitle="IDC数据分析">-->
+<!--        <div>-->
+<!--          <form nz-form [formGroup]="selectForm">-->
+<!--            <nz-row nzGutter="24">-->
+<!--              <nz-col nzSpan="8">-->
+<!--                <nz-form-item>-->
+<!--                  <nz-form-label nzFor="dateRange">时间</nz-form-label>-->
+<!--                  <nz-form-control>-->
+<!--                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>-->
+<!--                  </nz-form-control>-->
+<!--                </nz-form-item>-->
+<!--              </nz-col>-->
+<!--              <nz-col nzSpan="4">-->
+<!--                <nz-form-item>-->
+<!--                  <nz-form-label>时间粒度</nz-form-label>-->
+<!--                  <nz-form-control>-->
+<!--                    <nz-select formControlName="granularity">-->
+<!--                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>-->
+<!--                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>-->
+<!--                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>-->
+<!--                    </nz-select>-->
+<!--                  </nz-form-control>-->
+<!--                </nz-form-item>-->
+<!--              </nz-col>-->
+<!--              <nz-col nzSpan="4">-->
+<!--                <nz-form-item>-->
+<!--                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">-->
+<!--                    <i nz-icon nzType="search" nzTheme="outline"></i>-->
+<!--                    查询-->
+<!--                  </button>-->
+<!--                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置-->
+<!--                  </button>-->
+<!--                </nz-form-item>-->
+<!--              </nz-col>-->
+<!--            </nz-row>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--        &lt;!&ndash;        统计表格（左）&ndash;&gt;-->
+<!--        <div nz-row>-->
+<!--          <div nz-col nzSpan="12">-->
+<!--            <nz-row [nzGutter]="16">-->
+<!--              <nz-col [nzSpan]="12">-->
+<!--                <nz-statistic [nzValue]="(50292 | number)!" [nzTitle]="'IDC全部泛域名个数'"-->
+<!--                              [nzPrefix]="prefixDomain"></nz-statistic>-->
+<!--                <ng-template #prefixDomain><i nz-icon nzType="align-left" nzTheme="outline"></i></ng-template>-->
+<!--              </nz-col>-->
+<!--              <nz-col [nzSpan]="12">-->
+<!--                <nz-statistic [nzValue]="(160465 | number)!" [nzTitle]="'IDC域名个数'"-->
+<!--                              [nzPrefix]="prefixHost"></nz-statistic>-->
+<!--                <ng-template #prefixHost><i nz-icon nzType="align-center" nzTheme="outline"></i></ng-template>-->
+<!--              </nz-col>-->
+<!--              <nz-col [nzSpan]="12" style="margin-top: 32px;">-->
+<!--                <nz-statistic [nzValue]="(18550887560 | number)!" [nzTitle]="'IDC全部点击次数'"-->
+<!--                              [nzPrefix]="prefixSelect"></nz-statistic>-->
+<!--              </nz-col>-->
+<!--              <ng-template #prefixSelect><i nz-icon nzType="select" nzTheme="outline"></i></ng-template>-->
+<!--            </nz-row>-->
+<!--          </div>-->
+<!--          &lt;!&ndash;          统计表格（右）&ndash;&gt;-->
+<!--          <div nz-col nzSpan="12">-->
+<!--            <nz-row [nzGutter]="16">-->
+<!--              <nz-col [nzSpan]="12">-->
+<!--                <nz-card>-->
+<!--                  <nz-statistic-->
+<!--                    [nzValue]="76.39"-->
+<!--                    [nzTitle]="'IDC引入域名调度准确率'"-->
+<!--                    [nzPrefix]="prefixTplOne"-->
+<!--                    [nzSuffix]="'%'"-->
+<!--                    [nzValueStyle]="{ color: '#3F8600' }"-->
+<!--                  >-->
+<!--                  </nz-statistic>-->
+<!--                  <ng-template #prefixTplOne><i nz-icon nzType="arrow-up"></i></ng-template>-->
+<!--                </nz-card>-->
+<!--              </nz-col>-->
+<!--              <nz-col [nzSpan]="12">-->
+<!--                <nz-card>-->
+<!--                  <nz-statistic-->
+<!--                    [nzValue]="30.00"-->
+<!--                    [nzTitle]="'IDC资源贡献比'"-->
+<!--                    [nzPrefix]="prefixTplTwo"-->
+<!--                    [nzSuffix]="'%'"-->
+<!--                    [nzValueStyle]="{ color: '#CF1322' }"-->
+<!--                  >-->
+<!--                  </nz-statistic>-->
+<!--                  <ng-template #prefixTplTwo><i nz-icon nzType="arrow-down"></i></ng-template>-->
+<!--                </nz-card>-->
+<!--              </nz-col>-->
+<!--            </nz-row>-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        &lt;!&ndash;        柱状图&ndash;&gt;-->
+<!--        <div nz-col nzSpan="24">-->
+<!--          <div echarts [options]="idcTimesBarOption"></div>-->
+<!--        </div>-->
+<!--      </nz-tab>-->
+    </nz-tabset>
+  </app-content-body>
+</app-main-content>

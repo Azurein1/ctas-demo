@@ -1,0 +1,81 @@
+<app-main-content>
+  <app-content-header title="DNS数据查询">
+  </app-content-header>
+  <app-content-body>
+    <form nz-form>
+      <nz-row nzGutter="10">
+        <nz-col nzSpan="3">
+          <nz-form-item>
+            <nz-form-label nzSpan="6">域名</nz-form-label>
+            <nz-form-control>
+              <input nz-input />
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzSpan="3">
+          <nz-form-item>
+            <nz-form-label nzSpan="3">IP</nz-form-label>
+            <nz-form-control>
+              <input nz-input />
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzSpan="3">
+          <nz-form-item>
+            <nz-form-label nzSpan="8">CNAME</nz-form-label>
+            <nz-form-control>
+              <input nz-input />
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzSpan="3">
+          <nz-form-item>
+            <nz-form-label nzSpan="6">时间</nz-form-label>
+            <nz-form-control>
+              <nz-date-picker></nz-date-picker>
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzSpan="3">
+          <nz-form-item>
+            <nz-form-label nzSpan="8">备案名称</nz-form-label>
+            <nz-form-control>
+              <input nz-input />
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzSpan="3">
+          <button nz-button nzType="primary" (click)="getDnsData()">查询</button>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzType="default" type="reset" (click)="reset()">重置</button>
+        </nz-col>
+      </nz-row>
+    </form>
+    <nz-table #dnsTable [nzData]="dnsData">
+      <thead>
+      <tr>
+        <th>域名</th>
+        <th>IP</th>
+        <th>CNAME</th>
+        <th>时间</th>
+        <th>备案名称</th>
+        <th>IP次数</th>
+        <th>本网率</th>
+        <th>本省率</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of dnsTable.data">
+        <td>{{data.host}}</td>
+        <td>{{data.ip}}</td>
+        <td>{{data.cname}}</td>
+        <td>{{data.date}}</td>
+        <td>{{data.icp}}</td>
+        <td>{{data.times}}</td>
+        <td>{{data.inNetRate}}</td>
+        <td>{{data.inProRate}}</td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </app-content-body>
+</app-main-content>

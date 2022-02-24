@@ -1,0 +1,293 @@
+<app-main-content>
+  <app-content-header title="应用数据">
+  </app-content-header>
+  <app-content-body>
+    <nz-tabset>
+      <nz-tab nzTitle="应用类型分析">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label nzFor="dateRange">时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker id="dateRange" [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+            </nz-row>
+          </form>
+        </div>
+
+        <nz-row nzGutter="24">
+          <nz-col nzSpan="8">
+            <div echarts [options]="appBarOption"></div>
+          </nz-col>
+          <nz-col nzSpan="8">
+            <div echarts [options]="appPieOption"></div>
+          </nz-col>
+          <nz-col nzSpan="8">
+            <div echarts [options]="appInOutLineOption"></div>
+          </nz-col>
+        </nz-row>
+        <div echarts [options]="appAllTypeLineOption"></div>
+        <div>
+          <nz-table #appTable [nzData]="appDataList" nzTitle="应用类型流量数据">
+            <thead>
+            <tr>
+              <th nzAlign="center" *ngFor="let column of appListOfColumn" [nzShowSort]="column.flag"
+                  [nzSortFn]="column.compare" [nzSortPriority]="column.priority">{{ column.title }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of appTable.data">
+              <td nzAlign="center">{{data.id}}</td>
+              <td nzAlign="center">{{data.time}}</td>
+              <td nzAlign="center">{{data.appType}}</td>
+              <td nzAlign="center">{{data.minBandwidth | number: '0.2-2'}}</td>
+              <td nzAlign="center">{{data.maxBandwidth | number: '0.2-2'}}</td>
+              <td nzAlign="center">{{data.allFlow | number: '0.2-2'}}</td>
+              <td nzAlign="center">{{data.inFlow | number: '0.2-2'}}</td>
+              <td nzAlign="center">{{data.outFlow | number: '0.2-2'}}</td>
+              <td nzAlign="center">{{data.validity }}</td>
+            </tr>
+            </tbody>
+            <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+          </nz-table>
+        </div>
+      </nz-tab>
+      <nz-tab nzTitle="网站流量分析">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label>时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+
+            </nz-row>
+          </form>
+        </div>
+        <nz-row nzGutter="24">
+          <nz-col nzSpan="12">
+            <div echarts [options]="websiteTop10BarOption"></div>
+          </nz-col>
+          <nz-col nzSpan="12">
+            <div echarts [options]="websitePieOption"></div>
+          </nz-col>
+        </nz-row>
+        <div>
+          <nz-table #websiteTable [nzData]="websiteDataList" nzTitle="网站流量数据">
+            <thead>
+            <tr>
+              <th nzAlign="center" *ngFor="let column of websiteListOfColumn" [nzSortFn]="column.compare"
+                  [nzShowSort]="column.flag" [nzSortPriority]="column.priority">{{ column.title }}</th>
+              <!--              <th>序号</th>-->
+              <!--              <th>网站</th>-->
+              <!--              <th>应用类型</th>-->
+              <!--              <th>总流量(GB)</th>-->
+              <!--              <th>网内流量(GB)</th>-->
+              <!--              <th>网外流量(GB)</th>-->
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of websiteTable.data">
+              <td nzAlign="center">{{data.id}}</td>
+              <td nzAlign="center">{{data.time}}</td>
+              <td nzAlign="center">{{data.website}}</td>
+              <td nzAlign="center">{{data.appType}}</td>
+              <td nzAlign="center">{{data.allFlow | number: '0.2-2'}}</td>
+              <td nzAlign="center">{{data.inFlow | number: '0.2-2'}}</td>
+              <td nzAlign="center">{{data.outFlow | number: '0.2-2'}}</td>
+              <td nzAlign="center">{{data.validity }}</td>
+            </tr>
+            </tbody>
+            <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+          </nz-table>
+        </div>
+      </nz-tab>
+      <nz-tab nzTitle="热点应用分析">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label>时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+
+            </nz-row>
+          </form>
+        </div>
+        <nz-row nzGutter="24">
+          <nz-col nzSpan="12">
+            <div echarts [options]="hotBarOption"></div>
+          </nz-col>
+          <nz-col nzSpan="12">
+            <div echarts [options]="hotPieOption"></div>
+          </nz-col>
+        </nz-row>
+        <nz-table #hotTable [nzData]="hotDataList" nzTitle="热点应用网站流量数据">
+          <thead>
+          <tr>
+            <th nzAlign="center" *ngFor="let column of hotListOfColumn" [nzSortFn]="column.compare"
+                [nzShowSort]="column.flag" [nzSortPriority]="column.priority">{{ column.title }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of hotTable.data">
+            <td nzAlign="center">{{data.id}}</td>
+            <td nzAlign="center">{{data.time}}</td>
+            <td nzAlign="center">{{data.website}}</td>
+            <td nzAlign="center">{{data.srcAddress}}</td>
+            <td nzAlign="center">{{data.sp}}</td>
+            <td nzAlign="center">{{data.allFlow | number: '0.2-2'}}</td>
+            <td nzAlign="center">{{data.upFlow | number: '0.2-2'}}</td>
+            <td nzAlign="center">{{data.downFlow | number: '0.2-2'}}</td>
+            <td nzAlign="center">{{data.validity }}</td>
+          </tr>
+          </tbody>
+          <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="域名分析">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label>时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+            </nz-row>
+          </form>
+        </div>
+        <nz-row nzGutter="24">
+          <nz-col nzSpan="12">
+            <div echarts [options]="domainBarOption"></div>
+          </nz-col>
+          <nz-col nzSpan="12">
+            <nz-table #domainTable [nzData]="domainDataList">
+              <thead>
+              <tr>
+                <th nzAlign="center" *ngFor="let column of domainListOfColumn" [nzSortFn]="column.compare"
+                    [nzShowSort]="column.flag" [nzSortPriority]="column.priority">{{ column.title }}</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of domainTable.data">
+                <td nzAlign="center">{{data.id}}</td>
+                <td nzAlign="center">{{data.time}}</td>
+                <td nzAlign="center">{{data.domain}}</td>
+                <td nzAlign="center">{{data.allFlow | number: '0.2-2'}}</td>
+                <td nzAlign="center">{{data.upFlow | number: '0.2-2'}}</td>
+                <td nzAlign="center">{{data.downFlow | number: '0.2-2'}}</td>
+                <td nzAlign="center">{{data.validity }}</td>
+              </tr>
+              </tbody>
+              <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+            </nz-table>
+          </nz-col>
+        </nz-row>
+      </nz-tab>
+    </nz-tabset>
+  </app-content-body>
+</app-main-content>

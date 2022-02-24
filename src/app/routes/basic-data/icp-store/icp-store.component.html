@@ -1,0 +1,113 @@
+<app-main-content>
+  <app-content-header title="IP地址库">
+  </app-content-header>
+  <app-content-body>
+    <form nz-form>
+      <nz-row nzGutter="10">
+        <nz-col nzSpan="3">
+          <nz-form-item>
+            <nz-form-label nzSpan="6">关键字</nz-form-label>
+            <nz-form-control>
+              <input nz-input />
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzSpan="17">
+          <button nz-button nzType="primary" (click)="getIpData()">查询</button>
+          <nz-divider nzType="vertical"></nz-divider>
+          <button nz-button nzType="default" type="reset" (click)="reset()">重置</button>
+        </nz-col>
+        <nz-col nzSpan="4">
+          <nz-row>
+            <nz-upload
+              nzAction="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+              [nzHeaders]="{ authorization: 'authorization-text' }"
+            >
+              <button nz-button>
+                <i nz-icon nzType="upload"></i>
+                导入
+              </button>
+            </nz-upload>
+            <nz-divider nzType="vertical"></nz-divider>
+            <button nz-button nzType="primary">导出</button>
+            <nz-divider nzType="vertical"></nz-divider>
+            <button nz-button nzType="primary" (click)="showAdd()">新增</button>
+          </nz-row>
+        </nz-col>
+      </nz-row>
+    </form>
+
+    <nz-table #ipTable [nzData]="ipData">
+      <thead>
+      <tr>
+        <th>泛域名</th>
+        <th>主站域名</th>
+        <th>备案名称</th>
+        <th>备案号</th>
+        <th>备案时间</th>
+        <th>操作</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of ipTable.data">
+        <td>{{data.cname}}</td>
+        <td>{{data.host}}</td>
+        <td>{{data.icp}}</td>
+        <td>{{data.number}}</td>
+        <td>{{data.date}}</td>
+        <td><a>修改</a><nz-divider nzType="vertical"></nz-divider><a>删除</a></td>
+      </tr>
+      </tbody>
+    </nz-table>
+
+    <nz-drawer
+      [nzBodyStyle]="{ overflow: 'auto' }"
+      [nzMaskClosable]="false"
+      [nzWidth]="520"
+      [nzVisible]="addVisible"
+      nzTitle="新增ICP数据"
+      [nzFooter]="footerTpl"
+      (nzOnClose)="addClose()"
+    >
+      <form nz-form *nzDrawerContent>
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="email">泛域名</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="email">主站域名</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="email">备案名称</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="email">备案号</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+        <nz-form-item>
+          <nz-form-label [nzSpan]="6" nzFor="email">备案时间</nz-form-label>
+          <nz-form-control [nzSpan]="14">
+            <input nz-input />
+          </nz-form-control>
+        </nz-form-item >
+      </form>
+
+      <ng-template #footerTpl>
+        <div style="float: right">
+          <button nz-button style="margin-right: 8px;" (click)="addClose()">取消</button>
+          <button nz-button nzType="primary" (click)="addClose()">确认</button>
+        </div>
+      </ng-template>
+    </nz-drawer>
+  </app-content-body>
+</app-main-content>

@@ -1,0 +1,42 @@
+<app-main-content>
+  <app-content-header title="登录日志">
+  </app-content-header>
+  <app-content-body>
+    <nz-table #nzTable [nzData]="listOfDisplayData" nzTableLayout="fixed">
+      <thead>
+      <tr>
+        <th nzCustomFilter>
+          用户名
+          <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+            <i nz-icon nzType="search"></i>
+          </nz-filter-trigger>
+        </th>
+        <th>角色</th>
+        <th>登录时间</th>
+        <th>登录成功</th>
+        <th>登录详情</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of nzTable.data">
+        <td>{{ data.userName }}</td>
+        <td>{{ data.role }}</td>
+        <td>{{ data.loginInTime }}</td>
+        <td [ngStyle]="{'color': data.isSuccess === 'true' ? 'forestgreen' : 'red'}">{{ data.isSuccess}}</td>
+        <td><a>{{ data.detail }}</a></td>
+      </tr>
+      </tbody>
+    </nz-table>
+    <nz-dropdown-menu #menu="nzDropdownMenu">
+      <div class="ant-table-filter-dropdown">
+        <div class="search-box">
+          <input type="text" nz-input placeholder="查询用户名" [(ngModel)]="searchValue"/>
+          <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+            查询
+          </button>
+          <button nz-button nzSize="small" (click)="reset()">重置</button>
+        </div>
+      </div>
+    </nz-dropdown-menu>
+  </app-content-body>
+</app-main-content>

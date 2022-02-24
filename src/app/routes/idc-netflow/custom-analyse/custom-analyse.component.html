@@ -1,0 +1,1321 @@
+<app-main-content>
+  <app-content-header title="客户流量分析">
+  </app-content-header>
+  <app-content-body>
+    <nz-tabset>
+      <nz-tab nzTitle="总体概览">
+        <nz-row nzGutter="8">
+          <nz-col nzSpan="3">
+            <nz-card>
+              <nz-statistic
+                [nzValue]="(15.41 | number: '1.0-3')!"
+                [nzTitle]="'本省流速较昨日'"
+                [nzPrefix]="prefixTplOne"
+                [nzSuffix]="'%'"
+                [nzValueStyle]="{ color: '#3F8600' }"
+              >
+              </nz-statistic>
+              <ng-template #prefixTplOne><i nz-icon nzType="arrow-up"></i></ng-template>
+              <nz-divider></nz-divider>
+              <nz-statistic
+                [nzValue]="(346.412 | number: '1.0-3')!"
+                [nzTitle]="'本省平均流速'"
+                [nzSuffix]="'Gbps'"
+                [nzValueStyle]="{ color: '#3F8600' }"
+              >
+              </nz-statistic>
+            </nz-card>
+            <nz-divider></nz-divider>
+            <nz-card>
+              <nz-statistic
+                [nzValue]="(16.152 | number: '1.0-3')!"
+                [nzTitle]="'外省流速较昨日'"
+                [nzPrefix]="prefixTplTwo"
+                [nzSuffix]="'%'"
+                [nzValueStyle]="{ color: '#CF1322' }"
+              >
+              </nz-statistic>
+              <ng-template #prefixTplTwo><i nz-icon nzType="arrow-down"></i></ng-template>
+              <nz-divider></nz-divider>
+              <nz-statistic
+                [nzValue]="(953.062 | number: '1.0-3')!"
+                [nzTitle]="'外省平均流速'"
+                [nzSuffix]="'Gbps'"
+                [nzValueStyle]="{ color: '#3F8600' }"
+              >
+              </nz-statistic>
+            </nz-card>
+          </nz-col>
+          <nz-col nzSpan="21">
+            <nz-row nzGutter="8">
+              <nz-col nzSpan="10">
+                <nz-row nzGutter="8">
+                  <nz-col nzSpan="12">
+                    <nz-card>
+                      <nz-statistic
+                        [nzValue]="(923.673 | number: '1.0-3')!"
+                        [nzTitle]="'本网平均流速'"
+                        [nzSuffix]="'Gbps'"
+                        [nzValueStyle]="{ color: '#3F8600' }"
+                      >
+                      </nz-statistic>
+                    </nz-card>
+                  </nz-col>
+                  <nz-col nzSpan="12">
+                    <nz-card>
+                      <nz-statistic
+                        [nzValue]="(2139.229 | number: '1.0-3')!"
+                        [nzTitle]="'总流速'"
+                        [nzSuffix]="'Gbps'"
+                        [nzValueStyle]="{ color: '#3F8600' }"
+                      >
+                      </nz-statistic>
+                    </nz-card>
+                  </nz-col>
+                </nz-row>
+              </nz-col>
+              <nz-col nzSpan="14">
+                <nz-card>
+                  <nz-row>
+                    <nz-col nzSpan="6">
+                      <nz-statistic
+                        [nzValue]="(46.935 | number: '1.0-3')!"
+                        [nzTitle]="'电信平均流速'"
+                        [nzSuffix]="'Gbps'"
+                        [nzValueStyle]="{ color: '#3F8600' }"
+                      >
+                      </nz-statistic>
+                    </nz-col>
+                    <nz-col nzSpan="6">
+                      <nz-statistic
+                        [nzValue]="(50.095 | number: '1.0-3')!"
+                        [nzTitle]="'联通平均流速'"
+                        [nzSuffix]="'Gbps'"
+                        [nzValueStyle]="{ color: '#3F8600' }"
+                      >
+                      </nz-statistic>
+                    </nz-col>
+                    <nz-col nzSpan="6">
+                      <nz-statistic
+                        [nzValue]="(11.235 | number: '1.0-3')!"
+                        [nzTitle]="'国际运营商平均流速'"
+                        [nzSuffix]="'Gbps'"
+                        [nzValueStyle]="{ color: '#3F8600' }"
+                      >
+                      </nz-statistic>
+                    </nz-col>
+                    <nz-col nzSpan="6">
+                      <nz-statistic
+                        [nzValue]="(13.125 | number: '1.0-3')!"
+                        [nzTitle]="'其它平均流速'"
+                        [nzSuffix]="'Gbps'"
+                        [nzValueStyle]="{ color: '#3F8600' }"
+                      >
+                      </nz-statistic>
+                    </nz-col>
+                  </nz-row>
+                </nz-card>
+              </nz-col>
+            </nz-row>
+            <nz-row nzGutter="8">
+              <nz-col nzSpan="8">
+                <nz-tabset>
+                  <nz-tab nzTitle="24小时趋势图"><div echarts [options]="netflowTendOfDayOption"></div></nz-tab>
+                  <nz-tab nzTitle="7天趋势图"><div echarts [options]="allFlowLineOption"></div></nz-tab>
+                </nz-tabset>
+              </nz-col>
+              <nz-col nzSpan="8">
+                <nz-tabset>
+                  <nz-tab nzTitle="总体流速">
+                    <div echarts [options]="allFlowPieOption"></div>
+                  </nz-tab>
+                  <nz-tab nzTitle="V4/V6流速">
+                    <div echarts [options]="v4v6PieOption"></div>
+                  </nz-tab>
+                </nz-tabset>
+              </nz-col>
+              <nz-col nzSpan="8">
+                <div echarts [options]="allPieOption"></div>
+              </nz-col>
+            </nz-row>
+          </nz-col>
+        </nz-row>
+        <nz-range-picker style="margin-bottom: 10px;"></nz-range-picker>
+        <nz-table #filterTable [nzData]="listOfData" nzTableLayout="fixed">
+          <thead>
+          <tr>
+            <th
+              *ngFor="let column of listOfColumns"
+              [nzSortOrder]="column.sortOrder"
+              [nzSortFn]="column.sortFn"
+              [nzSortDirections]="column.sortDirections"
+              [nzFilterMultiple]="column.filterMultiple"
+              [nzFilters]="column.listOfFilter"
+              [nzFilterFn]="column.filterFn"
+            >
+              {{ column.name }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of filterTable.data">
+            <td>{{ data.userType }}</td>
+            <td>{{ data.maxSpeed }}</td>
+            <td>{{ data.minSpeed }}</td>
+            <td>{{ data.outNet }}</td>
+            <td>{{ data.net }}</td>
+            <td>{{ data.pro }}</td>
+            <td>{{ data.v4 }}</td>
+            <td><a (click)="showModal()">{{ data.trend }}</a></td>
+          </tr>
+          </tbody>
+        </nz-table>
+        <button nz-button nzType="primary">导出</button>
+        <nz-modal [(nzVisible)]="isVisible" nzTitle="流量趋势" (nzOnCancel)="handleCancel()" (nzOnOk)="handleOk()">
+          <ng-container *nzModalContent>
+            <div echarts [options]="netflowTendOfTypeOption"></div>
+          </ng-container>
+        </nz-modal>
+      </nz-tab>
+
+      <nz-tab nzTitle="用户群流速分析">
+        <div nz-row>
+          <div nz-col nzSpan="8">
+            <div echarts [options]="netflowSpeedInBarOption"></div>
+          </div>
+          <div nz-col nzSpan="8">
+            <div echarts [options]="netflowSpeedOutBarOption"></div>
+          </div>
+          <div nz-col nzSpan="8">
+            <div echarts [options]="netflowSpeedNationalBarOption"></div>
+          </div>
+        </div>
+        <nz-range-picker style="margin-bottom: 10px;"></nz-range-picker>
+        <nz-table #netflowSpeedTable [nzData]="netflowSpeedListOfData" nzTableLayout="fixed">
+          <thead>
+          <tr>
+            <th
+              *ngFor="let column of netflowSpeedOfColumns"
+              [nzSortOrder]="column.sortOrder"
+              [nzSortFn]="column.sortFn"
+              [nzSortDirections]="column.sortDirections"
+              [nzFilterMultiple]="column.filterMultiple"
+              [nzFilters]="column.listOfFilter"
+              [nzFilterFn]="column.filterFn"
+            >
+              {{ column.name }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of netflowSpeedTable.data">
+            <td>{{ data.userType }}</td>
+            <td>{{ data.total }}</td>
+            <td>{{ data.inProvince }}</td>
+            <td>{{ data.outProvince }}</td>
+            <td>{{ data.international }}</td>
+            <td>{{ data.v4 }}</td>
+            <td>{{ data.v6 }}</td>
+            <td><a (click)="showDetail()">详情</a></td>
+          </tr>
+          </tbody>
+        </nz-table>
+        <button nz-button nzType="primary">导出</button>
+
+        <nz-modal [(nzVisible)]="visible" nzTitle="流量详情" (nzOnCancel)="detailCancel()" (nzOnOk)="detailOk()" [nzWidth]="1200">
+          <ng-container *nzModalContent>
+            <div nz-row>
+              <div nz-col nzSpan="24">
+                <div echarts [options]="netflowTendOption"></div>
+              </div>
+            </div>
+            <nz-row>
+              <nz-col nzSpan="24">
+                <nz-tabset>
+                  <nz-tab nzTitle="省内用户">
+                    <nz-table #province [nzData]="provinceOfData">
+                      <thead>
+                      <tr>
+                        <th>省份</th>
+                        <th>平均流速</th>
+                        <th>峰值流速</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let data of province.data">
+                        <td>{{ data.province }}</td>
+                        <td>{{ data.average }}</td>
+                        <td>{{ data.peak }}</td>
+                      </tr>
+                      </tbody>
+                    </nz-table>
+                    <button nz-button nzType="primary">导出</button>
+                  </nz-tab>
+                  <nz-tab nzTitle="省外用户">
+                    <nz-table #outProvince [nzData]="outProvinceOfData">
+                      <thead>
+                      <tr>
+                        <th>省份</th>
+                        <th>平均流速</th>
+                        <th>峰值流速</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let data of outProvince.data">
+                        <td>{{ data.province }}</td>
+                        <td>{{ data.average }}</td>
+                        <td>{{ data.peak }}</td>
+                      </tr>
+                      </tbody>
+                    </nz-table>
+                    <button nz-button nzType="primary">导出</button>
+                  </nz-tab>
+                  <nz-tab nzTitle="出网用户">
+                    <nz-table #outNet [nzData]="outProvinceOfData">
+                      <thead>
+                      <tr>
+                        <th>省份</th>
+                        <th>平均流速</th>
+                        <th>峰值流速</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let data of outNet.data">
+                        <td>{{ data.province }}</td>
+                        <td>{{ data.average }}</td>
+                        <td>{{ data.peak }}</td>
+                      </tr>
+                      </tbody>
+                    </nz-table>
+                    <button nz-button nzType="primary">导出</button>
+                  </nz-tab>
+                </nz-tabset>
+              </nz-col>
+            </nz-row>
+          </ng-container>
+        </nz-modal>
+      </nz-tab>
+
+      <nz-tab nzTitle="出省访问概览">
+        <div nz-row>
+          <div nz-col nzSpan="14">
+            <div echarts [options]="outProvinceAlignTopBarOption"></div>
+          </div>
+          <div nz-col nzSpan="10">
+            <div echarts [options]="outNetAlignTopBondsOption"></div>
+          </div>
+        </div>
+        <nz-range-picker style="margin-left: 10px;margin-bottom: 10px;"></nz-range-picker>
+        <span style="margin-left: 16px">用户类型：</span><nz-select ngModel="lucy" style="width: 200px" [nzPlaceHolder]="'可筛选'">
+        <nz-option nzValue="全部" nzLabel="全部"></nz-option>
+        <nz-option nzValue="手机" nzLabel="手机"></nz-option>
+        <nz-option nzValue="固网" nzLabel="固网"></nz-option>
+        <nz-option nzValue="家宽" nzLabel="家宽"></nz-option>
+        <nz-option nzValue="WLAN" nzLabel="WLAN"></nz-option>
+      </nz-select>
+        <nz-table #outNetFlowTable [nzData]="outNetFlowOfData" nzTableLayout="fixed">
+          <thead>
+          <tr>
+            <th
+              *ngFor="let column of topflowOfColumns"
+              [nzSortOrder]="column.sortOrder"
+              [nzSortFn]="column.sortFn"
+              [nzSortDirections]="column.sortDirections"
+              [nzFilterMultiple]="column.filterMultiple"
+              [nzFilters]="column.listOfFilter"
+              [nzFilterFn]="column.filterFn"
+            >
+              {{ column.name }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of outNetFlowTable.data">
+            <td>{{ data.id }}</td>
+            <td>{{ data.province }}</td>
+            <!--            <td>{{ data.userType }}</td>-->
+            <td>{{ data.netflow }}</td>
+            <td>{{ data.dx }}</td>
+            <td>{{ data.lt }}</td>
+            <td>{{ data.gj }}</td>
+            <td>{{ data.qt }}</td>
+            <td>{{ data.v4 }}</td>
+            <td>{{ data.v6 }}</td>
+            <td><a (click)="showNetflowSummaryTable()">查看</a></td>
+          </tr>
+          </tbody>
+        </nz-table>
+        <button nz-button nzType="primary">导出</button>
+      </nz-tab>
+
+      <nz-tab nzTitle="出网访问概览">
+        <div nz-row>
+          <div nz-col nzSpan="14">
+            <div echarts [options]="outNetAlignTopBarOption"></div>
+          </div>
+          <div nz-col nzSpan="10">
+            <div echarts [options]="outNetAlignTopBondsOption"></div>
+          </div>
+        </div>
+        <nz-range-picker style="margin-left: 10px;margin-bottom: 10px;"></nz-range-picker>
+        <span style="margin-left: 16px">用户类型：</span><nz-select ngModel="lucy" style="width: 200px" [nzPlaceHolder]="'可筛选'">
+        <nz-option nzValue="全部" nzLabel="全部"></nz-option>
+        <nz-option nzValue="手机" nzLabel="手机"></nz-option>
+        <nz-option nzValue="固网" nzLabel="固网"></nz-option>
+        <nz-option nzValue="家宽" nzLabel="家宽"></nz-option>
+        <nz-option nzValue="WLAN" nzLabel="WLAN"></nz-option>
+      </nz-select>
+        <nz-table #outNetFlowTable [nzData]="outNetFlowOfData" nzTableLayout="fixed">
+          <thead>
+          <tr>
+            <th
+              *ngFor="let column of topflowOfColumns"
+              [nzSortOrder]="column.sortOrder"
+              [nzSortFn]="column.sortFn"
+              [nzSortDirections]="column.sortDirections"
+              [nzFilterMultiple]="column.filterMultiple"
+              [nzFilters]="column.listOfFilter"
+              [nzFilterFn]="column.filterFn"
+            >
+              {{ column.name }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of outNetFlowTable.data">
+            <td>{{ data.id }}</td>
+            <td>{{ data.province }}</td>
+            <!--            <td>{{ data.userType }}</td>-->
+            <td>{{ data.netflow }}</td>
+            <td>{{ data.dx }}</td>
+            <td>{{ data.lt }}</td>
+            <td>{{ data.gj }}</td>
+            <td>{{ data.qt }}</td>
+            <td>{{ data.v4 }}</td>
+            <td>{{ data.v6 }}</td>
+            <td><a (click)="showNetflowSummaryTable()">查看</a></td>
+          </tr>
+          </tbody>
+        </nz-table>
+        <button nz-button nzType="primary">导出</button>
+      </nz-tab>
+
+      <nz-tab nzTitle="ICP详情">
+        <nz-range-picker style="margin-bottom: 10px;"></nz-range-picker>
+        <nz-select ngModel="all" style="margin-left: 10px;width: 120px">
+          <nz-option nzValue="all" nzLabel="全部IDC"></nz-option>
+          <nz-option nzValue="blank" nzLabel="空港IDC"></nz-option>
+          <nz-option nzValue="west" nzLabel="西青IDC"></nz-option>
+        </nz-select>
+        <nz-table #customNetflowTable [nzData]="customNetflowOfData" nzTableLayout="fixed">
+          <thead>
+          <tr>
+            <th
+              *ngFor="let column of customNetflowOfColumns"
+              [nzSortOrder]="column.sortOrder"
+              [nzSortFn]="column.sortFn"
+              [nzSortDirections]="column.sortDirections"
+              [nzFilterMultiple]="column.filterMultiple"
+              [nzFilters]="column.listOfFilter"
+              [nzFilterFn]="column.filterFn"
+            >
+              {{ column.name }}
+            </th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of customNetflowTable.data">
+            <td><a (click)="showNetflowSummaryTable()">{{ data.compName }}</a></td>
+            <td>{{ data.other }}</td>
+            <td>{{ data.total }}</td>
+            <td>{{ data.inPro }}</td>
+            <td>{{ data.outPro }}</td>
+            <td>{{ data.outNet }}</td>
+            <td>{{ data.high }}</td>
+            <td>{{ data.low }}</td>
+            <td>{{ data.inProRent }}</td>
+            <td>{{ data.inNetRent }}</td>
+            <td><a (click)="showWeb()">网站分析</a></td>
+            <td><a (click)="showCustomTable()">域名分析</a></td>
+            <td><a (click)="showIpAnalyseOk()">IP分析</a></td>
+            <td><a (click)="showCdn()">CDN分析</a></td>
+          </tr>
+          </tbody>
+        </nz-table>
+        <button nz-button nzType="primary">导出</button>
+        <nz-modal [(nzVisible)]="webVisible" nzTitle="网站" (nzOnCancel)="webCancel()" (nzOnOk)="webCancel()" [nzWidth]="1400">
+          <ng-container *nzModalContent>
+            <nz-table #webTable [nzData]="webData">
+              <thead>
+              <tr>
+                <th>网站名称</th>
+                <!--          <th>域名</th>-->
+                <th>ICP名称</th>
+                <th>别名</th>
+                <th>总体流速(Gbps)</th>
+                <th>本省流速(Gbps)</th>
+                <th>外省流速(Gbps)</th>
+                <th>外网流速(Gbps)</th>
+                <th>本省率(Gbps)</th>
+                <th>本网率(Gbps)</th>
+                <th>IP分析</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of webTable.data">
+                <td>{{data.web}}</td>
+                <!--          <td>{{data.host}}</td>-->
+                <td>{{data.icp}}</td>
+                <td>{{data.other}}</td>
+                <td>{{data.total}}</td>
+                <td>{{data.inPro}}</td>
+                <td>{{data.outPro}}</td>
+                <td>{{data.outNet}}</td>
+                <td>{{data.proRate}}</td>
+                <td>{{data.netRate}}</td>
+                <td><a (click)="showHost()">IP分析</a></td>
+              </tr>
+              </tbody>
+            </nz-table>
+          </ng-container>
+          <nz-modal [(nzVisible)]="hostVisible" nzTitle="IP查看" (nzOnCancel)="hostCancel()" (nzOnOk)="hostCancel()">
+            <ng-container *nzModalContent>
+              <nz-table #hostTable [nzData]="hostData">
+                <thead>
+                <tr>
+                  <th>IP</th>
+                  <th>平均流速(Gbps)</th>
+                  <th>归属</th>
+                  <th>访问次数</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr *ngFor="let data of hostTable.data">
+                  <td>{{ data.ip }}</td>
+                  <td>{{ data.average }}</td>
+                  <td>{{ data.belongs }}</td>
+                  <td>{{ data.times }}</td>
+                </tr>
+                </tbody>
+              </nz-table>
+              <button nz-button nzType="primary">导出</button>
+            </ng-container>
+          </nz-modal>
+        </nz-modal>
+        <nz-modal [(nzVisible)]="netflowSummaryVisible" nzTitle="流速详情" (nzOnCancel)="netflowSummaryCancel()" (nzOnOk)="netflowSummaryOk()" [nzWidth]="1500">
+          <ng-container *nzModalContent>
+            <div nz-row>
+              <div nz-col nzSpan="24">
+                <div echarts [options]="netflowTendOption"></div>
+              </div>
+            </div>
+            <nz-row>
+              <nz-col nzSpan="24">
+                <nz-tabset>
+                  <nz-tab nzTitle="省内">
+                    <nz-table #province [nzData]="provinceOfData">
+                      <thead>
+                      <tr>
+                        <th>省份</th>
+                        <th>平均流速</th>
+                        <th>峰值流速</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let data of province.data">
+                        <td>{{ data.province }}</td>
+                        <td>{{ data.average }}</td>
+                        <td>{{ data.peak }}</td>
+                      </tr>
+                      </tbody>
+                    </nz-table>
+                    <button nz-button nzType="primary">导出</button>
+                  </nz-tab>
+                  <nz-tab nzTitle="省外">
+                    <nz-table #outProvince [nzData]="outProvinceOfData">
+                      <thead>
+                      <tr>
+                        <th>省份</th>
+                        <th>平均流速</th>
+                        <th>峰值流速</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let data of outProvince.data">
+                        <td>{{ data.province }}</td>
+                        <td>{{ data.average }}</td>
+                        <td>{{ data.peak }}</td>
+                      </tr>
+                      </tbody>
+                    </nz-table>
+                    <button nz-button nzType="primary">导出</button>
+                  </nz-tab>
+                  <nz-tab nzTitle="出网">
+                    <nz-table #outNet [nzData]="outProvinceOfData">
+                      <thead>
+                      <tr>
+                        <th>省份</th>
+                        <th>平均流速</th>
+                        <th>峰值流速</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let data of outNet.data">
+                        <td>{{ data.province }}</td>
+                        <td>{{ data.average }}</td>
+                        <td>{{ data.peak }}</td>
+                      </tr>
+                      </tbody>
+                    </nz-table>
+                    <button nz-button nzType="primary">导出</button>
+                  </nz-tab>
+                </nz-tabset>
+              </nz-col>
+            </nz-row>
+          </ng-container>
+          <!--          <ng-container *nzModalContent>-->
+          <!--            <div nz-row>-->
+          <!--              <div nz-col nzSpan="12">-->
+          <!--                <div echarts [options]="netflowTendOption"></div>-->
+          <!--              </div>-->
+          <!--              <div nz-col nzSpan="12">-->
+          <!--                <div echarts [options]="netflowTendOfDayOption"></div>-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--            <nz-row>-->
+          <!--              <nz-col nzSpan="24">-->
+          <!--                <nz-tabset>-->
+          <!--                  <nz-tab nzTitle="省内用户">-->
+          <!--                    <nz-range-picker style="margin-bottom: 10px;"></nz-range-picker>-->
+          <!--                    <nz-table #province [nzData]="provinceOfData">-->
+          <!--                    <thead>-->
+          <!--                    <tr>-->
+          <!--                      <th>省份</th>-->
+          <!--                      <th>平均流速</th>-->
+          <!--                      <th>峰值流速</th>-->
+          <!--                    </tr>-->
+          <!--                    </thead>-->
+          <!--                    <tbody>-->
+          <!--                    <tr *ngFor="let data of province.data">-->
+          <!--                      <td>{{ data.province }}</td>-->
+          <!--                      <td>{{ data.average }}</td>-->
+          <!--                      <td>{{ data.peak }}</td>-->
+          <!--                    </tr>-->
+          <!--                    </tbody>-->
+          <!--                  </nz-table>-->
+          <!--                  </nz-tab>-->
+          <!--                  <nz-tab nzTitle="省外用户">-->
+          <!--                    <nz-range-picker style="margin-bottom: 10px;"></nz-range-picker>-->
+          <!--                    <nz-table #outProvince [nzData]="outProvinceOfData">-->
+          <!--                      <thead>-->
+          <!--                      <tr>-->
+          <!--                        <th>省份</th>-->
+          <!--                        <th>平均流速</th>-->
+          <!--                        <th>峰值流速</th>-->
+          <!--                      </tr>-->
+          <!--                      </thead>-->
+          <!--                      <tbody>-->
+          <!--                      <tr *ngFor="let data of outProvince.data">-->
+          <!--                        <td>{{ data.province }}</td>-->
+          <!--                        <td>{{ data.average }}</td>-->
+          <!--                        <td>{{ data.peak }}</td>-->
+          <!--                      </tr>-->
+          <!--                      </tbody>-->
+          <!--                    </nz-table>-->
+          <!--                  </nz-tab>-->
+          <!--                  <nz-tab nzTitle="出网用户">-->
+          <!--                    <nz-range-picker style="margin-bottom: 10px;"></nz-range-picker>-->
+          <!--                    <nz-table #outNet [nzData]="outProvinceOfData">-->
+          <!--                      <thead>-->
+          <!--                      <tr>-->
+          <!--                        <th>省份</th>-->
+          <!--                        <th>平均流速</th>-->
+          <!--                        <th>峰值流速</th>-->
+          <!--                      </tr>-->
+          <!--                      </thead>-->
+          <!--                      <tbody>-->
+          <!--                      <tr *ngFor="let data of outNet.data">-->
+          <!--                        <td>{{ data.province }}</td>-->
+          <!--                        <td>{{ data.average }}</td>-->
+          <!--                        <td>{{ data.peak }}</td>-->
+          <!--                      </tr>-->
+          <!--                      </tbody>-->
+          <!--                    </nz-table>-->
+          <!--                  </nz-tab>-->
+          <!--                </nz-tabset>-->
+          <!--              </nz-col>-->
+          <!--            </nz-row>-->
+          <!--          </ng-container>-->
+        </nz-modal>
+
+        <nz-modal [(nzVisible)]="customVisible" [nzStyle]="{ top: '20px' }" nzTitle="域名分析" (nzOnCancel)="costomCancel()" (nzOnOk)="customOk()" [nzWidth]="width">
+          <ng-container *nzModalContent>
+            <nz-table #hostDetailTable [nzData]="hostDetailOfData">
+              <thead>
+              <tr>
+                <th>域名</th>
+                <th>平均流速(Gbps)</th>
+                <th>峰值流速(Gbps)</th>
+                <th>IPV4流速(Gbps)/占比</th>
+                <th>IPV6流速(Gbps)/占比</th>
+                <th>总访问量</th>
+                <th>IP分析</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of hostDetailTable.data">
+                <td><a (click)="showIpDetailTable()">{{ data.host }}</a></td>
+                <td>{{ data.average }}</td>
+                <td>{{ data.maxSpeed }}</td>
+                <td>{{ data.high }}</td>
+                <td>{{ data.low }}</td>
+                <td>{{ data.click }}</td>
+                <td><a (click)="showHost()">IP查看</a></td>
+              </tr>
+              </tbody>
+            </nz-table>
+            <button nz-button nzType="primary">导出</button>
+            <nz-modal [(nzVisible)]="hostVisible" nzTitle="IP查看" (nzOnCancel)="hostCancel()" (nzOnOk)="hostCancel()">
+              <ng-container *nzModalContent>
+                <nz-table #hostTable [nzData]="hostData">
+                  <thead>
+                  <tr>
+                    <th>IP</th>
+                    <th>平均流速(Gbps)</th>
+                    <th>归属</th>
+                    <th>访问次数</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let data of hostTable.data">
+                    <td>{{ data.ip }}</td>
+                    <td>{{ data.average }}</td>
+                    <td>{{ data.belongs }}</td>
+                    <td>{{ data.times }}</td>
+                  </tr>
+                  </tbody>
+                </nz-table>
+                <button nz-button nzType="primary">导出</button>
+              </ng-container>
+            </nz-modal>
+            <nz-modal [(nzVisible)]="ipDetailVidsible" [nzStyle]="{ top: '20px' }" nzTitle="IP详情" (nzOnCancel)="ipDetailCancel()" (nzOnOk)="ipDetailOk()" [nzWidth]="1300">
+              <ng-container *nzModalContent>
+                <nz-tabset>
+                  <nz-tab nzTitle="域名详情">
+                    <nz-table #ipDetailTable [nzData]="ipDetailOfDisplayData" nzTableLayout="fixed">
+                      <thead>
+                      <tr>
+                        <th nzCustomFilter>
+                          域名
+                          <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">
+                            <i nz-icon nzType="search"></i>
+                          </nz-filter-trigger>
+                        </th>
+                        <th>CNAME</th>
+                        <th>公司名</th>
+                        <th>点击次数</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let data of ipDetailTable.data">
+                        <td>{{ data.host }}</td>
+                        <td>{{ data.webName }}</td>
+                        <td>{{ data.compName }}</td>
+                        <td>{{ data.clickTime }}</td>
+                      </tr>
+                      </tbody>
+                      <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+                    </nz-table>
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                      <div class="ant-table-filter-dropdown">
+                        <div class="search-box">
+                          <input type="text" nz-input placeholder="搜索域名" [(ngModel)]="searchValue" />
+                          <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                            搜索
+                          </button>
+                          <button nz-button nzSize="small" (click)="reset()">重置</button>
+                        </div>
+                      </div>
+                    </nz-dropdown-menu>
+                  </nz-tab>
+                  <nz-tab nzTitle="CNAME详情">
+                    <nz-table #cnameTable [nzData]="cnameDetailOfDisplayData" nzTableLayout="fixed">
+                      <thead>
+                      <tr>
+                        <th nzCustomFilter>
+                          CNAME域
+                          <nz-filter-trigger [(nzVisible)]="cnameVisible" [nzActive]="cnameValue.length > 0" [nzDropdownMenu]="menu">
+                            <i nz-icon nzType="search"></i>
+                          </nz-filter-trigger>
+                        </th>
+                        <th>网站名</th>
+                        <th>公司名</th>
+                        <th>点击次数</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let data of cnameTable.data">
+                        <td>{{ data.cname }}</td>
+                        <td>{{ data.webName }}</td>
+                        <td>{{ data.compName }}</td>
+                        <td>{{ data.clickTime }}</td>
+                      </tr>
+                      </tbody>
+                      <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+                    </nz-table>
+                    <nz-dropdown-menu #menu="nzDropdownMenu">
+                      <div class="ant-table-filter-dropdown">
+                        <div class="search-box">
+                          <input type="text" nz-input placeholder="搜索CNAME" [(ngModel)]="cnameValue" />
+                          <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">
+                            搜索
+                          </button>
+                          <button nz-button nzSize="small" (click)="reset()">重置</button>
+                        </div>
+                      </div>
+                    </nz-dropdown-menu>
+                  </nz-tab>
+                </nz-tabset>
+              </ng-container>
+            </nz-modal>
+<!--            <nz-table #customIcpNetflowTable [nzData]="customNetflowIcpOfData" nzTableLayout="fixed">-->
+<!--              <thead>-->
+<!--              <tr>-->
+<!--                <th-->
+<!--                  *ngFor="let column of customNetflowIcpOfColumns"-->
+<!--                  [nzSortOrder]="column.sortOrder"-->
+<!--                  [nzSortFn]="column.sortFn"-->
+<!--                  [nzSortDirections]="column.sortDirections"-->
+<!--                  [nzFilterMultiple]="column.filterMultiple"-->
+<!--                  [nzFilters]="column.listOfFilter"-->
+<!--                  [nzFilterFn]="column.filterFn"-->
+<!--                >-->
+<!--                  {{ column.name }}-->
+<!--                </th>-->
+<!--              </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr *ngFor="let data of customIcpNetflowTable.data">-->
+<!--                <td><a (click)="showCustomIcpTable()">{{ data.icpName }}</a></td>-->
+<!--                &lt;!&ndash;                <td>{{ data.belong}}</td>&ndash;&gt;-->
+<!--                <td>{{ data.total }}</td>-->
+<!--                <td>{{ data.inPro }}</td>-->
+<!--                <td>{{ data.outPro }}</td>-->
+<!--                <td>{{ data.outNet }}</td>-->
+<!--                <td>{{ data.high }}</td>-->
+<!--                <td>{{ data.low }}</td>-->
+<!--                <td>{{ data.inProRent }}</td>-->
+<!--                <td>{{ data.inNetRent }}</td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </nz-table>-->
+<!--            <button nz-button nzType="primary">导出</button>-->
+
+            <nz-modal [(nzVisible)]="customIcpVisible" nzTitle="ICP详细信息" (nzOnCancel)="customIcpCancel()" (nzOnOk)="customIcpOk()" [nzWidth]="width">
+              <ng-container *nzModalContent>
+                <nz-tabset>
+                  <nz-tab nzTitle="IP">
+                    <nz-table #icpDetailTable [nzData]="icpDetailOfData">
+                      <thead>
+                      <tr>
+                        <th>IP</th>
+                        <th>平均流速(Gbps)</th>
+                        <th>峰值流速(Gbps)</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let data of icpDetailTable.data">
+                        <td><a (click)="showIpDetailTable()">{{ data.ip }}</a></td>
+                        <td>{{ data.average }}</td>
+                        <td>{{ data.maxSpeed }}</td>
+                      </tr>
+                      </tbody>
+                    </nz-table>
+                    <button nz-button nzType="primary">导出</button>
+                  </nz-tab>
+                  <nz-tab nzTitle="域名">
+                    <nz-table #hostDetailTable [nzData]="hostDetailOfData">
+                      <thead>
+                      <tr>
+                        <th>域名</th>
+                        <th>平均流速(Gbps)</th>
+                        <th>峰值流速(Gbps)</th>
+                        <th>IPV4流速(Gbps)/占比</th>
+                        <th>IPV6流速(Gbps)/占比</th>
+                        <th>总访问量</th>
+                        <th>IP分析</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr *ngFor="let data of hostDetailTable.data">
+                        <td><a (click)="showIpDetailTable()">{{ data.host }}</a></td>
+                        <td>{{ data.average }}</td>
+                        <td>{{ data.maxSpeed }}</td>
+                        <td>{{ data.high }}</td>
+                        <td>{{ data.low }}</td>
+                        <td>{{ data.click }}</td>
+                        <td><a (click)="showHost()">IP查看</a></td>
+                      </tr>
+                      </tbody>
+                    </nz-table>
+                    <button nz-button nzType="primary">导出</button>
+                  </nz-tab>
+                </nz-tabset>
+              </ng-container>
+            </nz-modal>
+          </ng-container>
+        </nz-modal>
+
+        <nz-modal [(nzVisible)]="ipAnalyseVisible" [nzStyle]="{ top: '20px' }" nzTitle="IP分析" (nzOnCancel)="ipAnalyseCancel()" (nzOnOk)="ipAnalyseOk()" [nzWidth]="width">
+          <ng-container *nzModalContent>
+            <nz-table #ipAnalyseTable [nzData]="customNetflowIpOfData" nzTableLayout="fixed">
+              <thead>
+              <tr>
+                <th
+                  *ngFor="let column of customNetflowIpOfColumns"
+                  [nzSortOrder]="column.sortOrder"
+                  [nzSortFn]="column.sortFn"
+                  [nzSortDirections]="column.sortDirections"
+                  [nzFilterMultiple]="column.filterMultiple"
+                  [nzFilters]="column.listOfFilter"
+                  [nzFilterFn]="column.filterFn"
+                >
+                  {{ column.name }}
+                </th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of ipAnalyseTable.data">
+                <td><a (click)="showIpTable()">{{ data.ip }}</a></td>
+                <!--                <td>{{ data.ipIcp }}</td>-->
+                <td>{{ data.total }}</td>
+                <td>{{ data.inPro }}</td>
+                <td>{{ data.outPro }}</td>
+                <td>{{ data.outNet }}</td>
+                <td>{{ data.inProRent }}</td>
+                <td>{{ data.inNetRent }}</td>
+                <td>{{ data.percent }}</td>
+              </tr>
+              </tbody>
+            </nz-table>
+            <button nz-button nzType="primary">导出</button>
+            <nz-modal [(nzVisible)]="ipVisibel" nzTitle="IP域名详情" (nzOnCancel)="ipCancel()" (nzOnOk)="ipOk()" [nzWidth]="width">
+              <ng-container *nzModalContent>
+                <nz-table #ipAnalyseTable [nzData]="ipAnalyseOfData">
+                  <thead>
+                  <tr>
+                    <th>域名</th>
+                    <th>CNAME</th>
+                    <th>网站名称</th>
+                    <th>公司名称</th>
+                    <th>访问量</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let data of ipAnalyseTable.data">
+                    <td>{{ data.host }}</td>
+                    <td>{{ data.cname }}</td>
+                    <td>{{ data.webName }}</td>
+                    <td>{{ data.compName }}</td>
+                    <td>{{ data.analyseTimes }}</td>
+                  </tr>
+                  </tbody>
+                </nz-table>
+                <button nz-button nzType="primary">导出</button>
+              </ng-container>
+            </nz-modal>
+          </ng-container>
+        </nz-modal>
+
+        <nz-modal [(nzVisible)]="cdnVisible"  nzTitle="CDN分析" (nzOnCancel)="cdnCancel()" (nzOnOk)="cdnCancel()" [nzWidth]="width">
+          <ng-container *nzModalContent>
+            <nz-table #cdnTable [nzData]="cdnData">
+              <thead>
+              <tr>
+                <th>CDN名称</th>
+                <th>CNAME泛域名</th>
+                <th>总流速(Gbps)</th>
+                <th>本省流速(Gbps)</th>
+                <th>外省流速(Gbps)</th>
+                <th>外网流速(Gbps)</th>
+                <th>IPV4流速(Gbps)/占比</th>
+                <th>IPV6流速(Gbps)/占比</th>
+                <th>本省率</th>
+                <th>本网率</th>
+                <th>IP分析</th>
+              </tr>
+              </thead>
+              <tbody>
+              <tr *ngFor="let data of cdnTable.data">
+                <td>{{data.cdn}}</td>
+                <td><a (click)="showCdnCname()">{{data.cname}}</a></td>
+                <td>{{data.total}}</td>
+                <td>{{data.inPro}}</td>
+                <td>{{data.outPro}}</td>
+                <td>{{data.outNet}}</td>
+                <td>{{data.high}}</td>
+                <td>{{data.low}}</td>
+                <td>{{data.inProRent}}</td>
+                <td>{{data.inNetRent}}</td>
+                <td><a (click)="showCdnIp()">IP分析</a></td>
+              </tr>
+              </tbody>
+            </nz-table>
+            <button nz-button nzType="primary">导出</button>
+            <nz-modal [(nzVisible)]="cdnCnameVisible"  nzTitle="CNAME分析" (nzOnCancel)="cdnCnameCancel()" (nzOnOk)="cdnCnameCancel()" [nzWidth]="1000">
+              <ng-container *nzModalContent>
+                <nz-table #cdnCnameTable [nzData]="cdnCnameData">
+                  <thead>
+                  <tr>
+                    <th>CNAME</th>
+                    <th>网站名</th>
+                    <th>点击次数</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let data of cdnCnameTable.data">
+                    <td>{{data.cname}}</td>
+                    <td>{{data.web}}</td>
+                    <td>{{data.clicks}}</td>
+                  </tr>
+                  </tbody>
+                </nz-table>
+                <button nz-button nzType="primary">导出</button>
+              </ng-container>
+            </nz-modal>
+            <nz-modal [(nzVisible)]="cdnIpVisible"  nzTitle="IP分析" (nzOnCancel)="cdnIpCancel()" (nzOnOk)="cdnIpCancel()" [nzWidth]="1000">
+              <ng-container *nzModalContent>
+                <nz-table #cdnIpTable [nzData]="cdnIpData">
+                  <thead>
+                  <tr>
+                    <th>IP</th>
+                    <th>IP归属</th>
+                    <th>IP次数</th>
+                  </tr>
+                  </thead>
+                  <tbody>
+                  <tr *ngFor="let data of cdnIpTable.data">
+                    <td>{{data.ip}}</td>
+                    <td>{{data.belongs}}</td>
+                    <td>{{data.times}}</td>
+                  </tr>
+                  </tbody>
+                </nz-table>
+                <button nz-button nzType="primary">导出</button>
+              </ng-container>
+            </nz-modal>
+          </ng-container>
+        </nz-modal>
+
+      </nz-tab>
+
+      <nz-tab nzTitle="应用分析">
+        <app-application-tab></app-application-tab>
+      </nz-tab>
+<!--      <nz-tab nzTitle="本省公司流量数据">-->
+<!--        <nz-range-picker style="margin-bottom: 10px;"></nz-range-picker>-->
+<!--        <nz-table #AllCompNetflow [nzData]="allCompanyOfData" nzTableLayout="fixed">-->
+<!--          <thead>-->
+<!--          <tr>-->
+<!--            <th-->
+<!--              *ngFor="let column of allCompanyOfColumns"-->
+<!--              [nzSortOrder]="column.sortOrder"-->
+<!--              [nzSortFn]="column.sortFn"-->
+<!--              [nzSortDirections]="column.sortDirections"-->
+<!--              [nzFilterMultiple]="column.filterMultiple"-->
+<!--              [nzFilters]="column.listOfFilter"-->
+<!--              [nzFilterFn]="column.filterFn"-->
+<!--            >-->
+<!--              {{ column.name }}-->
+<!--            </th>-->
+<!--          </tr>-->
+<!--          </thead>-->
+<!--          <tbody>-->
+<!--          <tr *ngFor="let data of AllCompNetflow.data">-->
+<!--            <td><a (click)="showClickComp()">{{ data.icpName }}</a></td>-->
+<!--&lt;!&ndash;            <td>{{ data.province }}</td>&ndash;&gt;-->
+<!--            <td><a (click)="showClickNetflow()">{{ data.total }}</a></td>-->
+<!--            <td><a (click)="showClickNetflow()">{{ data.inPro }}</a></td>-->
+<!--            <td><a (click)="showClickNetflow()">{{ data.outPro }}</a></td>-->
+<!--            <td><a (click)="showClickNetflow()">{{ data.outNet }}</a></td>-->
+<!--            <td>{{ data.high }}</td>-->
+<!--            <td>{{ data.low }}</td>-->
+<!--            <td>{{ data.inProRent }}</td>-->
+<!--            <td>{{ data.inNetRent }}</td>-->
+<!--          </tr>-->
+<!--          </tbody>-->
+<!--        </nz-table>-->
+<!--        <nz-modal [(nzVisible)]="clickComp" nzTitle="公司流量详情" (nzOnCancel)="compCancel()"  (nzOnOk)="compOk()" [nzWidth]="compWidth">-->
+<!--&lt;!&ndash;          <ng-container *nzModalContent>&ndash;&gt;-->
+<!--&lt;!&ndash;            <div nz-row>&ndash;&gt;-->
+<!--&lt;!&ndash;              <div nz-col nzSpan="12">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div echarts [options]="compNetflowLineOption"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;              </div>&ndash;&gt;-->
+<!--&lt;!&ndash;              <div nz-col nzSpan="12">&ndash;&gt;-->
+<!--&lt;!&ndash;                <div echarts [options]="compNetflowLineSevenOption"></div>&ndash;&gt;-->
+<!--&lt;!&ndash;              </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            </div>&ndash;&gt;-->
+<!--&lt;!&ndash;            <nz-range-picker style="margin-bottom: 10px;"></nz-range-picker>&ndash;&gt;-->
+<!--&lt;!&ndash;            <nz-table #compNetflowTable [nzData]="compNetflowOfData">&ndash;&gt;-->
+<!--&lt;!&ndash;              <thead>&ndash;&gt;-->
+<!--&lt;!&ndash;              <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>整体(平均流速/峰值流速）</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>本省流速</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>外省流速</th>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th>外网流速</th>&ndash;&gt;-->
+<!--&lt;!&ndash;              </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;              </thead>&ndash;&gt;-->
+<!--&lt;!&ndash;              <tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;              <tr *ngFor="let data of compNetflowTable.data">&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>{{ data.total }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>{{ data.inPro }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>{{ data.outPro }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>{{ data.outNet }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;              </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;              </tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;            </nz-table>&ndash;&gt;-->
+<!--&lt;!&ndash;          </ng-container>&ndash;&gt;-->
+<!--          <ng-container *nzModalContent>-->
+<!--            <div nz-row>-->
+<!--              <div nz-col nzSpan="24">-->
+<!--                <div echarts [options]="netflowTendOption"></div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--            <nz-row>-->
+<!--              <nz-col nzSpan="24">-->
+<!--                <nz-tabset>-->
+<!--                  <nz-tab nzTitle="省内用户">-->
+<!--                    <nz-table #province [nzData]="provinceOfData">-->
+<!--                      <thead>-->
+<!--                      <tr>-->
+<!--                        <th>省份</th>-->
+<!--                        <th>平均流速</th>-->
+<!--                        <th>峰值流速</th>-->
+<!--                      </tr>-->
+<!--                      </thead>-->
+<!--                      <tbody>-->
+<!--                      <tr *ngFor="let data of province.data">-->
+<!--                        <td>{{ data.province }}</td>-->
+<!--                        <td>{{ data.average }}</td>-->
+<!--                        <td>{{ data.peak }}</td>-->
+<!--                      </tr>-->
+<!--                      </tbody>-->
+<!--                    </nz-table>-->
+<!--                  </nz-tab>-->
+<!--                  <nz-tab nzTitle="省外用户">-->
+<!--                    <nz-table #outProvince [nzData]="outProvinceOfData">-->
+<!--                      <thead>-->
+<!--                      <tr>-->
+<!--                        <th>省份</th>-->
+<!--                        <th>平均流速</th>-->
+<!--                        <th>峰值流速</th>-->
+<!--                      </tr>-->
+<!--                      </thead>-->
+<!--                      <tbody>-->
+<!--                      <tr *ngFor="let data of outProvince.data">-->
+<!--                        <td>{{ data.province }}</td>-->
+<!--                        <td>{{ data.average }}</td>-->
+<!--                        <td>{{ data.peak }}</td>-->
+<!--                      </tr>-->
+<!--                      </tbody>-->
+<!--                    </nz-table>-->
+<!--                  </nz-tab>-->
+<!--                  <nz-tab nzTitle="出网用户">-->
+<!--                    <nz-table #outNet [nzData]="outProvinceOfData">-->
+<!--                      <thead>-->
+<!--                      <tr>-->
+<!--                        <th>省份</th>-->
+<!--                        <th>平均流速</th>-->
+<!--                        <th>峰值流速</th>-->
+<!--                      </tr>-->
+<!--                      </thead>-->
+<!--                      <tbody>-->
+<!--                      <tr *ngFor="let data of outNet.data">-->
+<!--                        <td>{{ data.province }}</td>-->
+<!--                        <td>{{ data.average }}</td>-->
+<!--                        <td>{{ data.peak }}</td>-->
+<!--                      </tr>-->
+<!--                      </tbody>-->
+<!--                    </nz-table>-->
+<!--                  </nz-tab>-->
+<!--                </nz-tabset>-->
+<!--              </nz-col>-->
+<!--            </nz-row>-->
+<!--          </ng-container>-->
+<!--        </nz-modal>-->
+<!--        <nz-modal [(nzVisible)]="clickNetflow" nzTitle="流量详情" (nzOnCancel)="netflowCancel()" (nzOnOk)="netflowOk()" [nzWidth]="compWidth">-->
+<!--            <ng-container *nzModalContent>-->
+<!--              <nz-tabset>-->
+<!--                <nz-tab nzTitle="IP">-->
+<!--                  <nz-table #icpDetailTable [nzData]="icpDetailOfData">-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                      <th>IP</th>-->
+<!--                      <th>平均流速(Gbps)</th>-->
+<!--                      <th>峰值流速(Gbps)</th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                    <tr *ngFor="let data of icpDetailTable.data">-->
+<!--                      <td><a (click)="showIpDetail()">{{ data.ip }}</a></td>-->
+<!--                      <td>{{ data.average }}</td>-->
+<!--                      <td>{{ data.maxSpeed }}</td>-->
+<!--                    </tr>-->
+<!--                    </tbody>-->
+<!--                  </nz-table>-->
+<!--                </nz-tab>-->
+<!--                <nz-tab nzTitle="域名">-->
+<!--                  <nz-table #hostDetailTable [nzData]="hostDetailOfData">-->
+<!--                    <thead>-->
+<!--                    <tr>-->
+<!--                      <th>域名</th>-->
+<!--                      <th>平均流速(Gbps)</th>-->
+<!--                      <th>峰值流速(Gbps)</th>-->
+<!--                      <th>总访问量</th>-->
+<!--                    </tr>-->
+<!--                    </thead>-->
+<!--                    <tbody>-->
+<!--                    <tr *ngFor="let data of hostDetailTable.data">-->
+<!--                      <td>{{ data.host }}</td>-->
+<!--                      <td>{{ data.average }}</td>-->
+<!--                      <td>{{ data.maxSpeed }}</td>-->
+<!--                      <td>{{ data.click }}</td>-->
+<!--                    </tr>-->
+<!--                    </tbody>-->
+<!--                  </nz-table>-->
+<!--                </nz-tab>-->
+<!--              </nz-tabset>-->
+<!--            </ng-container>-->
+<!--&lt;!&ndash;          <ng-container *nzModalContent>&ndash;&gt;-->
+<!--&lt;!&ndash;            <nz-table #AllCompNetflow [nzData]="netflowIpOfData" nzTableLayout="fixed">&ndash;&gt;-->
+<!--&lt;!&ndash;              <thead>&ndash;&gt;-->
+<!--&lt;!&ndash;              <tr>&ndash;&gt;-->
+<!--&lt;!&ndash;                <th&ndash;&gt;-->
+<!--&lt;!&ndash;                  *ngFor="let column of netflowIpOfColumns"&ndash;&gt;-->
+<!--&lt;!&ndash;                  [nzSortOrder]="column.sortOrder"&ndash;&gt;-->
+<!--&lt;!&ndash;                  [nzSortFn]="column.sortFn"&ndash;&gt;-->
+<!--&lt;!&ndash;                  [nzSortDirections]="column.sortDirections"&ndash;&gt;-->
+<!--&lt;!&ndash;                  [nzFilterMultiple]="column.filterMultiple"&ndash;&gt;-->
+<!--&lt;!&ndash;                  [nzFilters]="column.listOfFilter"&ndash;&gt;-->
+<!--&lt;!&ndash;                  [nzFilterFn]="column.filterFn"&ndash;&gt;-->
+<!--&lt;!&ndash;                >&ndash;&gt;-->
+<!--&lt;!&ndash;                  {{ column.name }}&ndash;&gt;-->
+<!--&lt;!&ndash;                </th>&ndash;&gt;-->
+<!--&lt;!&ndash;              </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;              </thead>&ndash;&gt;-->
+<!--&lt;!&ndash;              <tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;              <tr *ngFor="let data of AllCompNetflow.data">&ndash;&gt;-->
+<!--&lt;!&ndash;                <td><a (click)="showClickIp()">{{ data.ip }}</a></td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>{{ data.ipBelong }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>{{ data.operator }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>{{ data.netflow }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>{{ data.average }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;                <td>{{ data.maxSpeed }}</td>&ndash;&gt;-->
+<!--&lt;!&ndash;              </tr>&ndash;&gt;-->
+<!--&lt;!&ndash;              </tbody>&ndash;&gt;-->
+<!--&lt;!&ndash;            </nz-table>&ndash;&gt;-->
+<!--&lt;!&ndash;          </ng-container>&ndash;&gt;-->
+<!--        </nz-modal>-->
+<!--        <nz-modal [(nzVisible)]="clickIp" nzTitle="IP域名列表" (nzOnCancel)="ipCancel()" (nzOnOk)="ipOk()">-->
+<!--          <ng-container *nzModalContent>-->
+<!--            <nz-table #ipTable [nzData]="ipOfData">-->
+<!--              <thead>-->
+<!--              <tr>-->
+<!--                <th>域名</th>-->
+<!--                <th>CNAME</th>-->
+<!--              </tr>-->
+<!--              </thead>-->
+<!--              <tbody>-->
+<!--              <tr *ngFor="let data of ipTable.data">-->
+<!--                <td>{{ data.host }}</td>-->
+<!--                <td>{{ data.cname }}</td>-->
+<!--              </tr>-->
+<!--              </tbody>-->
+<!--            </nz-table>-->
+<!--          </ng-container>-->
+<!--        </nz-modal>-->
+<!--        <nz-modal [(nzVisible)]="ipDetailVidsible" [nzStyle]="{ top: '20px' }" nzTitle="IP详情" (nzOnCancel)="ipDetailCancel()" (nzOnOk)="ipDetailOk()" [nzWidth]="1200">-->
+<!--          <ng-container *nzModalContent>-->
+<!--            <nz-tabset>-->
+<!--              <nz-tab nzTitle="域名详情">-->
+<!--                <nz-table #ipDetailTable [nzData]="ipDetailOfDisplayData" nzTableLayout="fixed">-->
+<!--                  <thead>-->
+<!--                  <tr>-->
+<!--                    <th nzCustomFilter>-->
+<!--                      域名-->
+<!--                      <nz-filter-trigger [(nzVisible)]="visible" [nzActive]="searchValue.length > 0" [nzDropdownMenu]="menu">-->
+<!--                        <i nz-icon nzType="search"></i>-->
+<!--                      </nz-filter-trigger>-->
+<!--                    </th>-->
+<!--                    <th>CNAME</th>-->
+<!--                    <th>公司名</th>-->
+<!--                    <th>点击次数</th>-->
+<!--                  </tr>-->
+<!--                  </thead>-->
+<!--                  <tbody>-->
+<!--                  <tr *ngFor="let data of ipDetailTable.data">-->
+<!--                    <td>{{ data.host }}</td>-->
+<!--                    <td>{{ data.webName }}</td>-->
+<!--                    <td>{{ data.compName }}</td>-->
+<!--                    <td>{{ data.clickTime }}</td>-->
+<!--                  </tr>-->
+<!--                  </tbody>-->
+<!--                  <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>-->
+<!--                </nz-table>-->
+<!--                <nz-dropdown-menu #menu="nzDropdownMenu">-->
+<!--                  <div class="ant-table-filter-dropdown">-->
+<!--                    <div class="search-box">-->
+<!--                      <input type="text" nz-input placeholder="搜索域名" [(ngModel)]="searchValue" />-->
+<!--                      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">-->
+<!--                        搜索-->
+<!--                      </button>-->
+<!--                      <button nz-button nzSize="small" (click)="reset()">重置</button>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </nz-dropdown-menu>-->
+<!--              </nz-tab>-->
+<!--              <nz-tab nzTitle="CNAME详情">-->
+<!--                <nz-table #cnameTable [nzData]="cnameDetailOfDisplayData" nzTableLayout="fixed">-->
+<!--                  <thead>-->
+<!--                  <tr>-->
+<!--                    <th nzCustomFilter>-->
+<!--                      CNAME域-->
+<!--                      <nz-filter-trigger [(nzVisible)]="cnameVisible" [nzActive]="cnameValue.length > 0" [nzDropdownMenu]="menu">-->
+<!--                        <i nz-icon nzType="search"></i>-->
+<!--                      </nz-filter-trigger>-->
+<!--                    </th>-->
+<!--                    <th>网站名</th>-->
+<!--                    <th>公司名</th>-->
+<!--                    <th>点击次数</th>-->
+<!--                  </tr>-->
+<!--                  </thead>-->
+<!--                  <tbody>-->
+<!--                  <tr *ngFor="let data of cnameTable.data">-->
+<!--                    <td>{{ data.cname }}</td>-->
+<!--                    <td>{{ data.webName }}</td>-->
+<!--                    <td>{{ data.compName }}</td>-->
+<!--                    <td>{{ data.clickTime }}</td>-->
+<!--                  </tr>-->
+<!--                  </tbody>-->
+<!--                  <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>-->
+<!--                </nz-table>-->
+<!--                <nz-dropdown-menu #menu="nzDropdownMenu">-->
+<!--                  <div class="ant-table-filter-dropdown">-->
+<!--                    <div class="search-box">-->
+<!--                      <input type="text" nz-input placeholder="搜索CNAME" [(ngModel)]="cnameValue" />-->
+<!--                      <button nz-button nzSize="small" nzType="primary" (click)="search()" class="search-button">-->
+<!--                        搜索-->
+<!--                      </button>-->
+<!--                      <button nz-button nzSize="small" (click)="reset()">重置</button>-->
+<!--                    </div>-->
+<!--                  </div>-->
+<!--                </nz-dropdown-menu>-->
+<!--              </nz-tab>-->
+<!--            </nz-tabset>-->
+<!--          </ng-container>-->
+<!--        </nz-modal>-->
+<!--      </nz-tab>-->
+
+    </nz-tabset>
+  </app-content-body>
+</app-main-content>

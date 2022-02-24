@@ -1,0 +1,236 @@
+<app-main-content>
+  <app-content-header title="DNS数据">
+  </app-content-header>
+  <app-content-body>
+    <nz-tabset>
+      <nz-tab nzTitle="BGP协议">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label nzFor="dateRange">时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker id="dateRange" [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+
+            </nz-row>
+          </form>
+        </div>
+
+        <div echarts [options]="bgpBarOption"></div>
+
+        <div>
+          <nz-table #bgpTable [nzData]="bgpDataList">
+            <thead>
+            <tr>
+              <th nzAlign="center">序号</th>
+              <th nzAlign="center">时间</th>
+              <th nzAlign="center">router id</th>
+              <th nzAlign="center">源AS号</th>
+              <th nzAlign="center">AS路径</th>
+              <th nzAlign="center">BGP邻居</th>
+              <th nzAlign="center">BGP ASBR</th>
+              <th nzAlign="center">BGP community</th>
+              <th nzAlign="center">流量(GB)</th>
+              <th nzAlign="center">存储有效期</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr *ngFor="let data of bgpTable.data">
+              <td nzAlign="center">{{data.id}}</td>
+              <td nzAlign="center">{{data.time}}</td>
+              <td nzAlign="center">{{data.routerId}}</td>
+              <td nzAlign="center">{{data.asNumber}}</td>
+              <td nzAlign="center">{{data.asPath}}</td>
+              <td nzAlign="center">{{data.bgpNeighbor}}</td>
+              <td nzAlign="center">{{data.bgpASBR }}</td>
+              <td nzAlign="center">{{data.bgpCommunity}}</td>
+              <td nzAlign="center">{{data.flow | number: '0.2-2'}}</td>
+              <td nzAlign="center">{{data.validity }}</td>
+            </tr>
+            </tbody>
+            <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+          </nz-table>
+        </div>
+      </nz-tab>
+      <nz-tab nzTitle="IP数据">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label>时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+
+            </nz-row>
+          </form>
+        </div>
+        <nz-row nzGutter="24">
+          <nz-col nzSpan="8">
+            <div echarts [options]="ipBarOption"></div>
+          </nz-col>
+          <nz-col nzSpan="8">
+            <div echarts [options]="ipPieOption"></div>
+          </nz-col>
+          <nz-col nzSpan="8">
+            <div echarts [options]="ipAreaPieOption"></div>
+          </nz-col>
+        </nz-row>
+        <nz-table #ipTable [nzData]="ipDataList">
+          <thead>
+          <tr>
+            <th nzAlign="center">序号</th>
+            <th nzAlign="center">时间</th>
+            <th nzAlign="center">源IP地址</th>
+            <th nzAlign="center">源IP端口</th>
+            <th nzAlign="center">目的IP地址</th>
+            <th nzAlign="center">目的IP端口</th>
+            <th nzAlign="center">传输层协议</th>
+            <th nzAlign="center">地区</th>
+            <th nzAlign="center">应用</th>
+            <th nzAlign="center">流量(GB)</th>
+            <th nzAlign="center">DSCP标记</th>
+            <th nzAlign="center">存储有效期</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of ipTable.data">
+            <td nzAlign="center">{{data.id}}</td>
+            <td nzAlign="center">{{data.time}}</td>
+            <td nzAlign="center">{{data.srcIp}}</td>
+            <td nzAlign="center">{{data.srcPort}}</td>
+            <td nzAlign="center">{{data.destIp}}</td>
+            <td nzAlign="center">{{data.destPort }}</td>
+            <td nzAlign="center">{{data.transportLayerProtocol}}</td>
+            <td nzAlign="center">{{data.area}}</td>
+            <td nzAlign="center">{{data.app}}</td>
+            <td nzAlign="center">{{data.flow | number: '0.2-2'}}</td>
+            <td nzAlign="center">{{data.dscp | number: '0.0-0'}}</td>
+            <td nzAlign="center">{{data.validity }}</td>
+          </tr>
+          </tbody>
+          <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+        </nz-table>
+      </nz-tab>
+      <nz-tab nzTitle="IP数据分析">
+        <div>
+          <form nz-form [formGroup]="selectForm">
+            <nz-row nzGutter="24">
+              <nz-col nzSpan="8">
+                <nz-form-item>
+                  <nz-form-label>时间</nz-form-label>
+                  <nz-form-control>
+                    <nz-range-picker [nzShowTime]="true" formControlName="dateRange"></nz-range-picker>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <nz-form-label>时间粒度</nz-form-label>
+                  <nz-form-control>
+                    <nz-select formControlName="granularity">
+                      <nz-option nzValue="fiveMinutes" nzLabel="5分钟"></nz-option>
+                      <nz-option nzValue="oneHour" nzLabel="1小时"></nz-option>
+                      <nz-option nzValue="oneDay" nzLabel="1天"></nz-option>
+                    </nz-select>
+                  </nz-form-control>
+                </nz-form-item>
+              </nz-col>
+              <nz-col nzSpan="4">
+                <nz-form-item>
+                  <button nz-button nzType="primary" type="button" (click)="search()" class="search-button">
+                    <i nz-icon nzType="search" nzTheme="outline"></i>
+                    查询
+                  </button>
+                  <button nz-button nzType="default" type="reset"><i nz-icon nzType="rest" nzTheme="outline"></i>重置
+                  </button>
+                </nz-form-item>
+              </nz-col>
+            </nz-row>
+          </form>
+        </div>
+        <nz-row>
+          <nz-col nzSpan="12">
+            <div echarts [options]="portOption"></div>
+          </nz-col>
+          <nz-col nzSpan="12">
+            <div echarts [options]="customOption"></div>
+          </nz-col>
+        </nz-row>
+
+        <nz-table #ipanalysisTable [nzData]="ipAnalysisList">
+          <thead>
+          <tr>
+            <th nzAlign="center">序号</th>
+            <th nzAlign="center">IP地址段</th>
+            <th nzAlign="center">端口</th>
+            <th nzAlign="center">不对称流量率</th>
+            <th nzAlign="center">客户类型</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let data of ipanalysisTable.data">
+            <td nzAlign="center">{{data.id}}</td>
+            <td nzAlign="center">{{data.ip}}</td>
+            <td nzAlign="center">{{data.port}}</td>
+            <td nzAlign="center">{{data.percent}}</td>
+            <td nzAlign="center">{{data.type }}</td>
+          </tr>
+          </tbody>
+          <button nz-button nzType="primary" (click)="exportFile()" style="margin-top: 30px;">导出</button>
+        </nz-table>
+      </nz-tab>
+    </nz-tabset>
+  </app-content-body>
+</app-main-content>

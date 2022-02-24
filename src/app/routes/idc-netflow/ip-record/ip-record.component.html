@@ -1,0 +1,60 @@
+<app-main-content>
+  <app-content-header title="IP备案监测">
+  </app-content-header>
+
+  <app-content-body>
+    <form nz-form>
+      <nz-row nzGutter="10">
+        <nz-col nzSpan="4">
+          <nz-form-item>
+            <nz-form-label>IP</nz-form-label>
+            <nz-form-control>
+              <input nz-input>
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzSpan="4">
+          <nz-form-item>
+            <nz-form-label>域名</nz-form-label>
+            <nz-form-control>
+              <input nz-input>
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+        <nz-col nzSpan="4">
+          <nz-form-item>
+            <nz-form-control>
+              <button nz-button nzType="primary">查询</button>
+              <nz-divider nzType="vertical"></nz-divider>
+              <button nz-button nzType="default">重置</button>
+            </nz-form-control>
+          </nz-form-item>
+        </nz-col>
+      </nz-row>
+    </form>
+    <nz-table #basicTable [nzData]="listOfData">
+      <thead>
+      <tr>
+        <th>序号</th>
+        <th>IP</th>
+        <th>域名</th>
+        <th>CNAME</th>
+        <th>监测时间</th>
+        <th>核查周期</th>
+        <th>查看</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let data of basicTable.data">
+        <td>{{ data.id }}</td>
+        <td>{{ data.ip }}</td>
+        <td>{{ data.host }}</td>
+        <td>{{ data.cname }}</td>
+        <td>{{ data.time }}</td>
+        <td>{{ data.cycle }}</td>
+        <td><a>详情</a></td>
+      </tr>
+      </tbody>
+    </nz-table>
+  </app-content-body>
+</app-main-content>
